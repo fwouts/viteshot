@@ -1,30 +1,66 @@
 import connect from "connect";
+import glob from "glob";
 import * as vite from "vite";
 
-async function main() {
+async function main(options: {
+  projectPath: string;
+  filePathPattern: string;
+  ports: [number, number];
+}) {
+  const relativeFilePaths = glob.sync(options.filePathPattern, {
+    cwd: options.projectPath,
+  });
+  const rendererContent = `
+  import React from "react";
+  import ReactDOM from "react-dom";
+  ${relativeFilePaths
+    .map(
+      (componentFilePath, i) =>
+        `import * as componentModule${i} from "/${componentFilePath}";`
+    )
+    .join("\n")}
+
+  const components = [
+    ${relativeFilePaths
+      .map(
+        (componentFilePath, i) =>
+          `...Object.entries(componentModule${i}).map(([name, Component]) => {
+            return [\`${componentFilePath}/\${name}\`, Component];
+          }),`
+      )
+      .join("\n")}
+  ];
+  let current = 0;
+  renderNext();
+
+  function renderNext() {
+    const [name, Component] = components[current];
+    ReactDOM.render(<Component />, document.getElementById("root"));
+    if (++current === components.length) {
+      current = 0;
+    }
+    return name;
+  }
+
+  window.__renderNext__ = renderNext;
+  `;
   const viteServer = await vite.createServer({
-    root: "example",
+    root: options.projectPath,
     server: {
       middlewareMode: true,
       hmr: {
         overlay: false,
-        port: 3001,
+        port: options.ports[1],
       },
     },
     plugins: [
       {
         name: "virtual",
         load: async (id) => {
-          if (id !== "/__screenshot__.jsx") {
+          if (id !== "/__renderer__.jsx") {
             return null;
           }
-          return `
-          import React from "react";
-          import ReactDOM from "react-dom";
-          import App from "/src/App";
-
-          ReactDOM.render(<App />, document.getElementById("root"));
-          `;
+          return rendererContent;
         },
       },
     ],
@@ -39,12 +75,9 @@ async function main() {
       `
       <!DOCTYPE html>
       <html>
-        <head>
-          <title>Screenshot</title>
-        </head>
         <body>
           <div id="root"></div>
-          <script type="module" src="../__screenshot__.jsx"></script>
+          <script type="module" src="../__renderer__.jsx"></script>
         </body>
       </html>    
       `
@@ -52,9 +85,13 @@ async function main() {
     res.setHeader("Content-Type", "text/html").end(html);
   });
   app.use(viteServer.middlewares);
-  app.listen(3000, () => {
+  app.listen(options.ports[0], () => {
     console.log("Server ready.");
   });
 }
 
-main().catch(console.error);
+main({
+  projectPath: "example",
+  filePathPattern: "**/*.screenshot.@(jsx|tsx)",
+  ports: [3000, 3001],
+}).catch(console.error);
