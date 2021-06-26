@@ -1,17 +1,21 @@
 import connect from "connect";
 import glob from "glob";
+import path from "path";
+import playwright from "playwright";
 import * as vite from "vite";
+import viteReactJsx from "vite-react-jsx";
 
 async function main(options: {
   projectPath: string;
   filePathPattern: string;
   ports: [number, number];
 }) {
+  const [httpPort, hmrPort] = options.ports;
   const relativeFilePaths = glob.sync(options.filePathPattern, {
+    ignore: "**/node_modules/**",
     cwd: options.projectPath,
   });
   const rendererContent = `
-  import React from "react";
   import ReactDOM from "react-dom";
   ${relativeFilePaths
     .map(
@@ -22,27 +26,20 @@ async function main(options: {
 
   const components = [
     ${relativeFilePaths
-      .map(
-        (componentFilePath, i) =>
-          `...Object.entries(componentModule${i}).map(([name, Component]) => {
-            return [\`${componentFilePath}/\${name}\`, Component];
-          }),`
-      )
+      .map((componentFilePath, i) => {
+        const [componentDir] = componentFilePath.split(".");
+        return `...Object.entries(componentModule${i}).map(([name, Component]) => {
+            return [\`${componentDir}/\${name}\`, Component];
+          }),`;
+      })
       .join("\n")}
   ];
-  let current = 0;
-  renderNext();
 
-  function renderNext() {
-    const [name, Component] = components[current];
+  for (const [name, Component] of components) {
     ReactDOM.render(<Component />, document.getElementById("root"));
-    if (++current === components.length) {
-      current = 0;
-    }
-    return name;
+    await __takeScreenshot__(name);
   }
-
-  window.__renderNext__ = renderNext;
+  __done__();
   `;
   const viteServer = await vite.createServer({
     root: options.projectPath,
@@ -50,10 +47,11 @@ async function main(options: {
       middlewareMode: true,
       hmr: {
         overlay: false,
-        port: options.ports[1],
+        port: hmrPort,
       },
     },
     plugins: [
+      viteReactJsx(),
       {
         name: "virtual",
         load: async (id) => {
@@ -77,7 +75,7 @@ async function main(options: {
       <html>
         <body>
           <div id="root"></div>
-          <script type="module" src="../__renderer__.jsx"></script>
+          <script type="module" src="/__renderer__.jsx"></script>
         </body>
       </html>    
       `
@@ -85,9 +83,23 @@ async function main(options: {
     res.setHeader("Content-Type", "text/html").end(html);
   });
   app.use(viteServer.middlewares);
-  app.listen(options.ports[0], () => {
-    console.log("Server ready.");
+  await new Promise((resolve) => app.listen(httpPort, resolve));
+  const browser = await playwright.chromium.launch();
+  const page = await browser.newPage();
+  let resolveDone!: () => void;
+  const donePromise = new Promise<void>((resolve) => {
+    resolveDone = resolve;
   });
+  await page.exposeFunction("__takeScreenshot__", async (name: string) => {
+    await page.screenshot({
+      fullPage: true,
+      path: path.join(options.projectPath, `${name}.png`),
+    });
+  });
+  await page.exposeFunction("__done__", resolveDone);
+  await page.goto(`http://localhost:${httpPort}`);
+  await donePromise;
+  console.log("Screenshots taken.");
 }
 
 main({
