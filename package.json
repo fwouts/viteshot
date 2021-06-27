@@ -4,7 +4,8 @@
   "scripts": {
     "dev:renderer": "ts-node-dev --respawn renderer.ts",
     "dev:docker-screenshot": "docker build . -t screenshooter && mkdir -p __screenshots__ && docker run -it --mount type=bind,source=\"$(pwd)\"/__screenshots__,target=/app/__screenshots__ screenshooter",
-    "dev:local-screenshot": "ts-node-dev --respawn --watch example screenshooter.ts",
+    "dev:local-screenshot": "ts-node screenshooter.ts",
+    "dev:local-screenshot:watch": "ts-node-dev --respawn --watch example screenshooter.ts",
     "dev:percy-screenshot": "percy exec -- ts-node screenshooter.ts"
   },
   "dependencies": {
