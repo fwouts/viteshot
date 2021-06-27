@@ -37,12 +37,12 @@ jobs:
           git config user.name '🤖 GitHub Actions'
           git config user.email 'screenshot-bot@zenc.io'
           git add __screenshots__
-          if git diff-index --quiet HEAD --; then
+          if [[ `git status --porcelain` ]]; then
           then
-            echo "✅ Screenshots have not changed."
-          else
             # TODO: Handle default branch differently.
             git commit -m "🤖 Updated screenshots"
             git push
             echo "⚠️ Screenshots have been updated."
+          else
+            echo "✅ Screenshots have not changed."
           fi
