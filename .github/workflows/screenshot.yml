@@ -34,10 +34,15 @@ jobs:
       - run: yarn dev:local-screenshot
       - name: Push screenshots
         run: |
-          # TODO: Handle default branch differently.
-          # TODO: Handle absence of changes.
           git config user.name '🤖 GitHub Actions'
           git config user.email 'screenshot-bot@zenc.io'
           git add __screenshots__
-          git commit -m "🤖 Updated screenshots"
-          git push
+          if git diff --exit-code
+          then
+            # TODO: Handle default branch differently.
+            git commit -m "🤖 Updated screenshots"
+            git push
+            echo "⚠️ Screenshots have been updated."
+          else
+            echo "✅ Screenshots have not changed."
+          fi
