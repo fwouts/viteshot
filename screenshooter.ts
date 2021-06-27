@@ -34,7 +34,7 @@ async function main<
 }
 
 const options = {
-  url: "http://localhost:3000",
+  url: process.env["SCREENSHOT_URL"] || "http://localhost:3000",
 } as const;
 
 if (process.env["PERCY_SERVER_ADDRESS"]) {
