@@ -75,6 +75,12 @@ async function main(options: {
       `
       <!DOCTYPE html>
       <html>
+        <style>
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+        </style>
         <body>
           <div id="root"></div>
           <script type="module" src="/__renderer__.jsx"></script>
