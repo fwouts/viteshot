@@ -40,7 +40,11 @@ jobs:
           git config user.email 'screenshot-bot@zenc.io'
           git add __screenshots__
           if [[ `git status --porcelain` ]]; then
-            # TODO: Handle default branch differently.
+            current_branch=`git branch --show-current`
+            if ["$current_branch" == "master"] || ["$current_branch" == "main"]; then
+              echo "🚨 Screenshots have changed on $current_branch!"
+              exit 1
+            fi
             git commit -m "🤖 Updated screenshots"
             git push
             echo "⚠️ Screenshots have been updated."
