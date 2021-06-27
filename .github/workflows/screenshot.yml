@@ -52,3 +52,8 @@ jobs:
           else
             echo "✅ Screenshots have not changed."
           fi
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: screenshots
+          path: __screenshots__/
