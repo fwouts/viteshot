@@ -5,6 +5,7 @@ import puppeteer from "puppeteer";
 
 async function main<
   Page extends {
+    click(selector: string): Promise<void>;
     exposeFunction: puppeteer.Page["exposeFunction"];
     goto(url: string): Promise<unknown>;
   }
@@ -24,6 +25,9 @@ async function main<
   });
   await page.exposeFunction("__takeScreenshot__", async (name: string) => {
     await options.captureScreenshot(page, name);
+  });
+  await page.exposeFunction("__click__", async (selector: string) => {
+    await page.click(selector);
   });
   await page.exposeFunction("__done__", resolveDone);
   await page.goto(options.url);

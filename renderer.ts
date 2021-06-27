@@ -36,6 +36,9 @@ async function main(options: {
 
   for (const [name, Component] of components) {
     ReactDOM.render(<Component />, document.getElementById("root"));
+    if (Component.beforeScreenshot) {
+      await Component.beforeScreenshot(document.getElementById("root"));
+    }
     await __takeScreenshot__(name);
   }
   __done__();
