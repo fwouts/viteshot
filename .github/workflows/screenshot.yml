@@ -44,6 +44,7 @@ jobs:
             current_branch=`git branch --show-current`
             if [ "$current_branch" = "master" ] | [ "$current_branch" = "main" ]; then
               echo "🚨 Screenshots have changed on $current_branch!"
+              git status
               exit 1
             fi
             git commit -m "🤖 Updated screenshots"
