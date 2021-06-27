@@ -22,7 +22,9 @@ jobs:
       - name: Cache Node.js modules
         uses: actions/cache@v2
         with:
-          path: "**/node_modules"
+          path: |
+            **/node_modules
+            ~/.cache/ms-playwright
           key: ${{ runner.OS }}-v2-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-v2-yarn-
