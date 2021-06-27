@@ -1,6 +1,5 @@
 import { useState } from "react";
 import App from "./App";
-import { click } from "./screenshot-lib";
 
 export const Screenshot1 = () => <div>Hello, World!</div>;
 
@@ -20,5 +19,5 @@ export const Screenshot3 = () => {
   );
 };
 Screenshot3.beforeScreenshot = async (element: HTMLElement) => {
-  await click(element.querySelector("#button"));
+  element.querySelector<HTMLButtonElement>("#button")!.click();
 };

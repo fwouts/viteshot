@@ -9,12 +9,10 @@
   "dependencies": {
     "@percy/cli": "^1.0.0-beta.56",
     "@percy/puppeteer": "^2.0.0",
-    "@types/uuid": "^8.3.0",
     "connect": "^3.7.0",
     "glob": "^7.1.7",
     "playwright": "^1.12.2",
     "puppeteer": "^10.0.0",
-    "uuid": "^8.3.2",
     "vite": "^2.3.8",
     "vite-react-jsx": "^1.1.1"
   },
