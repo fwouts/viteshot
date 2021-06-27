@@ -4,14 +4,16 @@ import playwright from "playwright";
 import puppeteer from "puppeteer";
 
 async function main<
-  Browser extends { newPage(): Promise<Page>; close(): Promise<void> },
   Page extends {
     exposeFunction: puppeteer.Page["exposeFunction"];
     goto(url: string): Promise<unknown>;
   }
 >(options: {
   url: string;
-  launchBrowser(): Promise<Browser>;
+  launchBrowser(): Promise<{
+    newPage(): Promise<Page>;
+    close(): Promise<void>;
+  }>;
   captureScreenshot(page: Page, name: string): Promise<void>;
 }) {
   const browser = await options.launchBrowser();
@@ -43,9 +45,23 @@ if (process.env["PERCY_SERVER_ADDRESS"]) {
     captureScreenshot: percySnapshot,
   }).catch(console.error);
 } else {
-  main<playwright.Browser, playwright.Page>({
+  main<playwright.Page>({
     ...options,
-    launchBrowser: () => playwright.chromium.launch(),
+    launchBrowser: async () => {
+      const browser = await playwright.chromium.launch();
+      return {
+        newPage: async () => {
+          const page = await browser.newPage();
+          page
+            .on("pageerror", ({ message }) => console.error(message))
+            .on("requestfailed", (request) =>
+              console.warn(`${request.failure()!.errorText} ${request.url()}`)
+            );
+          return page;
+        },
+        close: () => browser.close(),
+      };
+    },
     captureScreenshot: async (page, name) => {
       await page.screenshot({
         fullPage: true,
