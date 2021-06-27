@@ -1,9 +1,11 @@
 import { useState } from "react";
-import App from "./App";
+import AppComponent from "./App";
 
-export const Screenshot2 = () => <App />;
+export const HelloWorld = () => <div>Hello, World!</div>;
 
-export const Screenshot3 = () => {
+export const App = () => <AppComponent />;
+
+export const Clicked = () => {
   const [clicked, setClicked] = useState(false);
 
   return (
@@ -16,6 +18,6 @@ export const Screenshot3 = () => {
     </div>
   );
 };
-Screenshot3.beforeScreenshot = async (element: HTMLElement) => {
+Clicked.beforeScreenshot = async (element: HTMLElement) => {
   element.querySelector<HTMLButtonElement>("#button")!.click();
 };
