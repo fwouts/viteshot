@@ -1,0 +1,53 @@
+name: Screenshot
+
+concurrency:
+  group: manager-${{ github.ref }}
+  cancel-in-progress: true
+
+on: push
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [14.x]
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/ms-playwright
+          key: ${{ runner.OS }}-v2-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-v2-yarn-
+      - run: yarn
+      - run: cd example && yarn
+      - run: yarn dev:renderer &
+      - run: yarn dev:local-screenshot
+      - name: Push screenshots
+        run: |
+          git config user.name '🤖 GitHub Actions'
+          git config user.email 'screenshot-bot@zenc.io'
+          git add __screenshots__
+          if [[ `git status --porcelain` ]]; then
+            current_branch=`git branch --show-current`
+            if ["$current_branch" == "master"] || ["$current_branch" == "main"]; then
+              echo "🚨 Screenshots have changed on $current_branch!"
+              exit 1
+            fi
+            git commit -m "🤖 Updated screenshots"
+            git push
+            echo "⚠️ Screenshots have been updated."
+          else
+            echo "✅ Screenshots have not changed."
+          fi
