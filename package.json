@@ -2,8 +2,9 @@
   "name": "screenshot-v2",
   "author": "François Wouts <f@zenc.io>",
   "scripts": {
-    "dev:local": "ts-node-dev --respawn main.ts",
-    "percy": "percy exec -- ts-node main.ts"
+    "dev:renderer": "ts-node-dev --respawn renderer.ts",
+    "dev:local-screenshot": "ts-node-dev --respawn screenshooter.ts",
+    "dev:percy-screenshot": "percy exec -- ts-node screenshooter.ts"
   },
   "dependencies": {
     "@percy/cli": "^1.0.0-beta.56",

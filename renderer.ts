@@ -1,25 +1,13 @@
-import percySnapshot from "@percy/puppeteer";
 import connect from "connect";
 import glob from "glob";
 import { Server } from "http";
-import path from "path";
-import playwright from "playwright";
-import puppeteer from "puppeteer";
 import * as vite from "vite";
 import viteReactJsx from "vite-react-jsx";
 
-async function main<
-  Browser extends { newPage(): Promise<Page>; close(): Promise<void> },
-  Page extends {
-    exposeFunction: puppeteer.Page["exposeFunction"];
-    goto(url: string): Promise<unknown>;
-  }
->(options: {
+async function main(options: {
   projectPath: string;
   filePathPattern: string;
   ports: readonly [number, number];
-  launchBrowser(): Promise<Browser>;
-  captureScreenshot(page: Page, name: string): Promise<void>;
 }) {
   const [httpPort, hmrPort] = options.ports;
   const relativeFilePaths = glob.sync(options.filePathPattern, {
@@ -96,47 +84,11 @@ async function main<
   app.use(viteServer.middlewares);
   let server!: Server;
   await new Promise((resolve) => (server = app.listen(httpPort, resolve)));
-  const browser = await options.launchBrowser();
-  const page = await browser.newPage();
-  let resolveDone!: () => void;
-  const donePromise = new Promise<void>((resolve) => {
-    resolveDone = resolve;
-  });
-  await page.exposeFunction("__takeScreenshot__", async (name: string) => {
-    await options.captureScreenshot(page, name);
-  });
-  await page.exposeFunction("__done__", resolveDone);
-  await page.goto(`http://localhost:${httpPort}`);
-  await donePromise;
-  await browser.close();
-  await viteServer.close();
-  server.close();
-  console.log("Done.");
-  process.exit(0);
+  console.log(`Ready on port ${httpPort}.`);
 }
 
-const options = {
+main({
   projectPath: "example",
   filePathPattern: "**/*.screenshot.@(jsx|tsx)",
   ports: [3000, 3001],
-} as const;
-
-if (process.env["PERCY_SERVER_ADDRESS"]) {
-  // We're running inside Percy.
-  main({
-    ...options,
-    launchBrowser: () => puppeteer.launch(),
-    captureScreenshot: percySnapshot,
-  }).catch(console.error);
-} else {
-  main<playwright.Browser, playwright.Page>({
-    ...options,
-    launchBrowser: () => playwright.chromium.launch(),
-    captureScreenshot: async (page, name) => {
-      await page.screenshot({
-        fullPage: true,
-        path: path.join(options.projectPath, `${name}.png`),
-      });
-    },
-  }).catch(console.error);
-}
+}).catch(console.error);
