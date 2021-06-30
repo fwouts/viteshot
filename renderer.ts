@@ -97,7 +97,7 @@ async function main(options: {
 }
 
 main({
-  projectPath: "example",
+  projectPath: "react-example",
   filePathPattern: "**/*.screenshot.@(jsx|tsx)",
   ports: [3000, 3001],
 }).catch(console.error);
