@@ -9,17 +9,24 @@ import viteReactJsx from "vite-react-jsx";
 const frameworkConfiguration = {
   react: {
     defaultImports: false,
+    plugins: [viteReactJsx()],
+  },
+  solid: {
+    defaultImports: false,
+    plugins: [],
   },
   svelte: {
     defaultImports: true,
+    plugins: [],
   },
   vue: {
     defaultImports: true,
+    plugins: [],
   },
 } as const;
 
 async function main(options: {
-  framework: "react" | "svelte" | "vue";
+  framework: "react" | "solid" | "svelte" | "vue";
   projectPath: string;
   filePathPattern: string;
   ports: readonly [number, number];
@@ -58,8 +65,16 @@ async function main(options: {
       .join("\n")}
   ];
 
-  await renderScreenshots(components);
-  __done__();
+  if (!window.__takeScreenshot__) {
+    // Debugging.
+    window.__takeScreenshot__ = (name) => {
+      console.log(\`Simulating screenshot: \${name}\`)
+      return new Promise(resolve => setTimeout(resolve, 1000));
+    };
+    window.__done__ = () => {};
+  }
+
+  renderScreenshots(components).then(__done__).catch(console.error);
   `;
   const viteServer = await vite.createServer({
     root: options.projectPath,
@@ -70,11 +85,11 @@ async function main(options: {
       },
     },
     plugins: [
-      viteReactJsx(),
+      ...frameworkConfig.plugins,
       {
         name: "virtual",
         load: async (id) => {
-          if (id !== "/__renderer__.js") {
+          if (id !== "/__renderer__.jsx") {
             return null;
           }
           return rendererContent;
@@ -100,7 +115,7 @@ async function main(options: {
         </style>
         <body>
           <div id="root"></div>
-          <script type="module" src="/__renderer__.js"></script>
+          <script type="module" src="/__renderer__.jsx"></script>
         </body>
       </html>    
       `
@@ -113,12 +128,20 @@ async function main(options: {
   console.log(`Ready on port ${httpPort}.`);
 }
 
-const framework: string = "svelte";
+const framework: string = "solid";
 switch (framework) {
   case "react":
     main({
       framework: "react",
       projectPath: "react-example",
+      filePathPattern: "**/*.screenshot.@(jsx|tsx)",
+      ports: [3000, 3001],
+    }).catch(console.error);
+    break;
+  case "solid":
+    main({
+      framework: "solid",
+      projectPath: "solid-example",
       filePathPattern: "**/*.screenshot.@(jsx|tsx)",
       ports: [3000, 3001],
     }).catch(console.error);
