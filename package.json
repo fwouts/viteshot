@@ -6,13 +6,14 @@
     "dev:renderer:watch": "ts-node-dev --respawn renderer.ts",
     "dev:docker-screenshot": "docker build . -t screenshooter && mkdir -p __screenshots__ && docker run -it --mount type=bind,source=\"$(pwd)\"/__screenshots__,target=/app/__screenshots__ screenshooter",
     "dev:local-screenshot": "ts-node screenshooter.ts",
-    "dev:local-screenshot:watch": "ts-node-dev --respawn --watch react-example screenshooter.ts",
+    "dev:local-screenshot:watch": "ts-node-dev --respawn --watch react-example,vue-example screenshooter.ts",
     "dev:percy-screenshot": "percy exec -- ts-node screenshooter.ts"
   },
   "dependencies": {
     "@percy/cli": "^1.0.0-beta.56",
     "@percy/puppeteer": "^2.0.0",
     "connect": "^3.7.0",
+    "fs-extra": "^10.0.0",
     "glob": "^7.1.7",
     "playwright": "^1.12.2",
     "puppeteer": "^10.0.0",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/connect": "^3.4.34",
+    "@types/fs-extra": "^9.0.11",
     "@types/glob": "^7.1.3",
     "@types/node": "^15.12.4",
     "@types/react": "^17.0.11",
