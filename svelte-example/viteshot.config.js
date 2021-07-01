@@ -1,6 +1,6 @@
-const playwright = require("viteshot/shooters/playwright");
+import playwright from "viteshot/shooters/playwright";
 
-module.exports = {
+export default {
   framework: "svelte",
   browser: playwright(),
 };
