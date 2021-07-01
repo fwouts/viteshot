@@ -25,13 +25,12 @@ const frameworkConfiguration = {
   },
 } as const;
 
-async function main(options: {
+export async function startRenderer(options: {
   framework: "react" | "solid" | "svelte" | "vue";
   projectPath: string;
   filePathPattern: string;
-  ports: readonly [number, number];
+  port: number;
 }) {
-  const [httpPort, hmrPort] = options.ports;
   const relativeFilePaths = glob.sync(options.filePathPattern, {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
@@ -80,9 +79,6 @@ async function main(options: {
     root: options.projectPath,
     server: {
       middlewareMode: true,
-      hmr: {
-        port: hmrPort,
-      },
     },
     plugins: [
       ...frameworkConfig.plugins,
@@ -124,42 +120,9 @@ async function main(options: {
   });
   app.use(viteServer.middlewares);
   let server!: Server;
-  await new Promise((resolve) => (server = app.listen(httpPort, resolve)));
-  console.log(`Ready on port ${httpPort}.`);
-}
-
-const framework: string = "solid";
-switch (framework) {
-  case "react":
-    main({
-      framework: "react",
-      projectPath: "react-example",
-      filePathPattern: "**/*.screenshot.@(jsx|tsx)",
-      ports: [3000, 3001],
-    }).catch(console.error);
-    break;
-  case "solid":
-    main({
-      framework: "solid",
-      projectPath: "solid-example",
-      filePathPattern: "**/*.screenshot.@(jsx|tsx)",
-      ports: [3000, 3001],
-    }).catch(console.error);
-    break;
-  case "svelte":
-    main({
-      framework: "svelte",
-      projectPath: "svelte-example",
-      filePathPattern: "**/*.screenshot.svelte",
-      ports: [3000, 3001],
-    }).catch(console.error);
-    break;
-  case "vue":
-    main({
-      framework: "vue",
-      projectPath: "vue-example",
-      filePathPattern: "**/*.screenshot.vue",
-      ports: [3000, 3001],
-    }).catch(console.error);
-    break;
+  await new Promise((resolve) => (server = app.listen(options.port, resolve)));
+  return async () => {
+    await viteServer.close();
+    await server.close();
+  };
 }
