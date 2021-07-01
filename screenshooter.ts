@@ -1,9 +1,6 @@
-import percySnapshot from "@percy/puppeteer";
-import path from "path";
-import playwright from "playwright";
 import puppeteer from "puppeteer";
 
-async function main<
+export async function shoot<
   Page extends {
     exposeFunction: puppeteer.Page["exposeFunction"];
     goto(url: string): Promise<unknown>;
@@ -29,58 +26,4 @@ async function main<
   await page.goto(options.url);
   await donePromise;
   await browser.close();
-  console.log("Done.");
-  process.exit(0);
-}
-
-const options = {
-  url: process.env["SCREENSHOT_URL"] || "http://localhost:3000",
-} as const;
-
-if (process.env["PERCY_SERVER_ADDRESS"]) {
-  // We're running inside Percy.
-  main({
-    ...options,
-    launchBrowser: async () => {
-      const browser = await puppeteer.launch();
-      return {
-        newPage: async () => {
-          const page = await browser.newPage();
-          page
-            .on("pageerror", ({ message }) => console.error(message))
-            .on("requestfailed", (request) =>
-              console.warn(`${request.failure()!.errorText} ${request.url()}`)
-            );
-          return page;
-        },
-        close: () => browser.close(),
-      };
-    },
-    captureScreenshot: percySnapshot,
-  }).catch(console.error);
-} else {
-  main<playwright.Page>({
-    ...options,
-    launchBrowser: async () => {
-      const browser = await playwright.chromium.launch();
-      return {
-        newPage: async () => {
-          const page = await browser.newPage();
-          page
-            .on("pageerror", ({ message }) => console.error(message))
-            .on("requestfailed", (request) =>
-              console.warn(`${request.failure()!.errorText} ${request.url()}`)
-            );
-          return page;
-        },
-        close: () => browser.close(),
-      };
-    },
-    captureScreenshot: async (page, name) => {
-      await page.screenshot({
-        fullPage: true,
-        path: path.join("__screenshots__", `${name}.png`),
-      });
-    },
-  }).catch(console.error);
 }
