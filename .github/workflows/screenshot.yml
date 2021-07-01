@@ -32,6 +32,7 @@ jobs:
             ${{ runner.OS }}-v2-yarn-
       - run: yarn
       - run: cd react-example && yarn
+      - run: cd svelte-example && yarn
       - run: cd vue-example && yarn
       - run: yarn dev:renderer &
       - run: rm -rf __screenshots__
