@@ -35,7 +35,6 @@ jobs:
       - run: cd solid-example && yarn
       - run: cd svelte-example && yarn
       - run: cd vue-example && yarn
-      - run: yarn dev:renderer &
       - run: rm -rf __screenshots__
       - run: yarn dev:local
       - name: Push screenshots
