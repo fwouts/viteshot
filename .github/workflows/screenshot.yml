@@ -31,12 +31,32 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-v2-yarn-
       - run: yarn
-      - run: cd react-example && yarn
-      - run: cd solid-example && yarn
-      - run: cd svelte-example && yarn
-      - run: cd vue-example && yarn
-      - run: rm -rf __screenshots__
-      - run: yarn dev:local
+      - run: yarn build
+      - run: cd dist && npm link
+      - run: |
+          cd react-example && \
+          yarn && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot
+      - run: |
+          cd solid-example && \
+          yarn && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot
+      - run: |
+          cd svelte-example && \
+          yarn && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot
+      - run: |
+          cd vue-example && \
+          yarn && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot
       - name: Push screenshots
         run: |
           git config user.name '🤖 GitHub Actions'

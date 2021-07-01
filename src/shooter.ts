@@ -1,29 +1,23 @@
 import puppeteer from "puppeteer";
+import { BrowserConfig } from "./config";
 
 export async function shoot<
   Page extends {
     exposeFunction: puppeteer.Page["exposeFunction"];
     goto(url: string): Promise<unknown>;
   }
->(options: {
-  url: string;
-  launchBrowser(): Promise<{
-    newPage(): Promise<Page>;
-    close(): Promise<void>;
-  }>;
-  captureScreenshot(page: Page, name: string): Promise<void>;
-}) {
-  const browser = await options.launchBrowser();
+>({ url, browserConfig }: { url: string; browserConfig: BrowserConfig<Page> }) {
+  const browser = await browserConfig.launchBrowser();
   const page = await browser.newPage();
   let resolveDone!: () => void;
   const donePromise = new Promise<void>((resolve) => {
     resolveDone = resolve;
   });
   await page.exposeFunction("__takeScreenshot__", async (name: string) => {
-    await options.captureScreenshot(page, name);
+    await browserConfig.captureScreenshot(page, name);
   });
   await page.exposeFunction("__done__", resolveDone);
-  await page.goto(options.url);
+  await page.goto(url);
   await donePromise;
   await browser.close();
 }

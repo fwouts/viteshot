@@ -37,7 +37,7 @@ export async function startRenderer(options: {
   });
   const frameworkConfig = frameworkConfiguration[options.framework];
   const rendererContent = `${await fs.readFile(
-    path.join(__dirname, "renderers", options.framework + ".js"),
+    path.join(__dirname, "..", "renderers", options.framework + ".js"),
     "utf8"
   )}
   ${relativeFilePaths

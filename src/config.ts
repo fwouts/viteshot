@@ -1,6 +1,5 @@
 export interface Config<Page extends BasicPage> {
   framework: Framework;
-  projectPath: string;
   filePathPattern: string;
   browser: BrowserConfig<Page>;
 }
