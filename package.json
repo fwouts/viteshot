@@ -3,10 +3,10 @@
   "author": "François Wouts <f@zenc.io>",
   "scripts": {
     "dev:renderer": "ts-node renderer.ts",
-    "dev:renderer:watch": "ts-node-dev --respawn renderer.ts",
+    "dev:renderer:watch": "ts-node-dev --respawn --watch renderers renderer.ts",
     "dev:docker-screenshot": "docker build . -t screenshooter && mkdir -p __screenshots__ && docker run -it --mount type=bind,source=\"$(pwd)\"/__screenshots__,target=/app/__screenshots__ screenshooter",
     "dev:local-screenshot": "ts-node screenshooter.ts",
-    "dev:local-screenshot:watch": "ts-node-dev --respawn --watch react-example,vue-example screenshooter.ts",
+    "dev:local-screenshot:watch": "ts-node-dev --respawn --watch react-example,svelte-example,vue-example screenshooter.ts",
     "dev:percy-screenshot": "percy exec -- ts-node screenshooter.ts"
   },
   "dependencies": {

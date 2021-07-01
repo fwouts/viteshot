@@ -10,13 +10,16 @@ const frameworkConfiguration = {
   react: {
     defaultImports: false,
   },
+  svelte: {
+    defaultImports: true,
+  },
   vue: {
     defaultImports: true,
   },
 } as const;
 
 async function main(options: {
-  framework: "react" | "vue";
+  framework: "react" | "svelte" | "vue";
   projectPath: string;
   filePathPattern: string;
   ports: readonly [number, number];
@@ -110,13 +113,21 @@ async function main(options: {
   console.log(`Ready on port ${httpPort}.`);
 }
 
-const framework: string = "vue";
+const framework: string = "svelte";
 switch (framework) {
   case "react":
     main({
       framework: "react",
       projectPath: "react-example",
       filePathPattern: "**/*.screenshot.@(jsx|tsx)",
+      ports: [3000, 3001],
+    }).catch(console.error);
+    break;
+  case "svelte":
+    main({
+      framework: "svelte",
+      projectPath: "svelte-example",
+      filePathPattern: "**/*.screenshot.svelte",
       ports: [3000, 3001],
     }).catch(console.error);
     break;
