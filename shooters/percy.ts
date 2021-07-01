@@ -1,8 +1,8 @@
 import percySnapshot from "@percy/puppeteer";
 import puppeteer from "puppeteer";
-import { BrowserConfig } from "../config";
+import { BrowserConfig } from "../src/config";
 
-export const percyConfig = (): BrowserConfig<puppeteer.Page> =>
+export default (): BrowserConfig<puppeteer.Page> =>
   ({
     launchBrowser: async () => {
       const browser = await puppeteer.launch();
@@ -19,5 +19,8 @@ export const percyConfig = (): BrowserConfig<puppeteer.Page> =>
         close: () => browser.close(),
       };
     },
-    captureScreenshot: percySnapshot,
+    captureScreenshot: async (page, name) => {
+      console.log(`Capturing: ${name}`);
+      return percySnapshot(page, name);
+    },
   } as const);

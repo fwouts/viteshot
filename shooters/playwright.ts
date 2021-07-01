@@ -1,8 +1,8 @@
 import path from "path";
 import playwright from "playwright";
-import { BrowserConfig } from "../config";
+import { BrowserConfig } from "../src/config";
 
-export const playwrightConfig = (): BrowserConfig<playwright.Page> =>
+export default (): BrowserConfig<playwright.Page> =>
   ({
     launchBrowser: async () => {
       const browser = await playwright.chromium.launch();
@@ -20,6 +20,7 @@ export const playwrightConfig = (): BrowserConfig<playwright.Page> =>
       };
     },
     captureScreenshot: async (page: playwright.Page, name: string) => {
+      console.log(`Capturing: ${name}`);
       await page.screenshot({
         fullPage: true,
         path: path.join("__screenshots__", `${name}.png`),
