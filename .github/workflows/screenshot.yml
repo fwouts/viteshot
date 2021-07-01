@@ -79,4 +79,4 @@ jobs:
         if: failure()
         with:
           name: screenshots
-          path: __screenshots__/
+          path: "**/__screenshots__/"
