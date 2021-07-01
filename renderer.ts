@@ -1,10 +1,22 @@
 import connect from "connect";
+import fs from "fs-extra";
 import glob from "glob";
 import { Server } from "http";
+import path from "path";
 import * as vite from "vite";
 import viteReactJsx from "vite-react-jsx";
 
+const frameworkConfiguration = {
+  react: {
+    defaultImports: false,
+  },
+  vue: {
+    defaultImports: true,
+  },
+} as const;
+
 async function main(options: {
+  framework: "react" | "vue";
   projectPath: string;
   filePathPattern: string;
   ports: readonly [number, number];
@@ -14,33 +26,36 @@ async function main(options: {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
   });
-  const rendererContent = `
-  import ReactDOM from "react-dom";
+  const frameworkConfig = frameworkConfiguration[options.framework];
+  const rendererContent = `${await fs.readFile(
+    path.join(__dirname, "renderers", options.framework + ".js"),
+    "utf8"
+  )}
   ${relativeFilePaths
     .map(
       (componentFilePath, i) =>
-        `import * as componentModule${i} from "/${componentFilePath}";`
+        `import ${
+          frameworkConfig.defaultImports ? "" : "* as "
+        } componentModule${i} from "/${componentFilePath}";`
     )
     .join("\n")}
 
   const components = [
     ${relativeFilePaths
       .map((componentFilePath, i) => {
-        const [componentDir] = componentFilePath.split(".");
-        return `...Object.entries(componentModule${i}).map(([name, Component]) => {
-            return [\`${componentDir}/\${name}\`, Component];
-          }),`;
+        const [componentBaseName] = componentFilePath.split(".");
+        if (frameworkConfig.defaultImports) {
+          return `[\`${componentBaseName}\`, componentModule${i}],`;
+        } else {
+          return `...Object.entries(componentModule${i}).map(([name, component]) => {
+              return [\`${componentBaseName}/\${name}\`, component];
+            }),`;
+        }
       })
       .join("\n")}
   ];
 
-  for (const [name, Component] of components) {
-    ReactDOM.render(<Component />, document.getElementById("root"));
-    if (Component.beforeScreenshot) {
-      await Component.beforeScreenshot(document.getElementById("root"));
-    }
-    await __takeScreenshot__(name);
-  }
+  await renderScreenshots(components);
   __done__();
   `;
   const viteServer = await vite.createServer({
@@ -48,7 +63,6 @@ async function main(options: {
     server: {
       middlewareMode: true,
       hmr: {
-        overlay: false,
         port: hmrPort,
       },
     },
@@ -57,7 +71,7 @@ async function main(options: {
       {
         name: "virtual",
         load: async (id) => {
-          if (id !== "/__renderer__.jsx") {
+          if (id !== "/__renderer__.js") {
             return null;
           }
           return rendererContent;
@@ -83,7 +97,7 @@ async function main(options: {
         </style>
         <body>
           <div id="root"></div>
-          <script type="module" src="/__renderer__.jsx"></script>
+          <script type="module" src="/__renderer__.js"></script>
         </body>
       </html>    
       `
@@ -96,8 +110,22 @@ async function main(options: {
   console.log(`Ready on port ${httpPort}.`);
 }
 
-main({
-  projectPath: "example",
-  filePathPattern: "**/*.screenshot.@(jsx|tsx)",
-  ports: [3000, 3001],
-}).catch(console.error);
+const framework: string = "vue";
+switch (framework) {
+  case "react":
+    main({
+      framework: "react",
+      projectPath: "react-example",
+      filePathPattern: "**/*.screenshot.@(jsx|tsx)",
+      ports: [3000, 3001],
+    }).catch(console.error);
+    break;
+  case "vue":
+    main({
+      framework: "vue",
+      projectPath: "vue-example",
+      filePathPattern: "**/*.screenshot.vue",
+      ports: [3000, 3001],
+    }).catch(console.error);
+    break;
+}

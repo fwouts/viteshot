@@ -31,7 +31,8 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-v2-yarn-
       - run: yarn
-      - run: cd example && yarn
+      - run: cd react-example && yarn
+      - run: cd vue-example && yarn
       - run: yarn dev:renderer &
       - run: rm -rf __screenshots__
       - run: yarn dev:local-screenshot
