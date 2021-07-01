@@ -1,7 +1,7 @@
 name: Screenshot
 
 concurrency:
-  group: manager-${{ github.ref }}
+  group: screenshot-${{ github.ref }}
   cancel-in-progress: true
 
 on: push
@@ -30,30 +30,30 @@ jobs:
           key: ${{ runner.OS }}-v2-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-v2-yarn-
-      - run: yarn
+      - run: yarn --frozen-lockfile
       - run: yarn build
       - run: cd dist && npm link
       - run: |
           cd react-example && \
-          yarn && \
+          yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot
       - run: |
           cd solid-example && \
-          yarn && \
+          yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot
       - run: |
           cd svelte-example && \
-          yarn && \
+          yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot
       - run: |
           cd vue-example && \
-          yarn && \
+          yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot
@@ -61,6 +61,7 @@ jobs:
         run: |
           git config user.name '🤖 GitHub Actions'
           git config user.email 'screenshot-bot@zenc.io'
+
           git add .
           if [[ `git status --porcelain` ]]; then
             current_branch=`git branch --show-current`

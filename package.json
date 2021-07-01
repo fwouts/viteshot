@@ -1,12 +1,15 @@
 {
   "name": "viteshot",
+  "version": "0.0.0-dev",
   "author": "François Wouts <f@zenc.io>",
+  "license": "MIT",
   "main": "dist",
   "bin": {
     "viteshot": "lib/cli.js"
   },
   "scripts": {
     "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/",
+    "release": "yarn build && cd dist && yarn publish --non-interactive",
     "dev:local": "ts-node main.ts",
     "dev:local:watch": "ts-node-dev --respawn --watch renderers,react-example,solid-example,svelte-example,vue-example main.ts",
     "dev:percy": "percy exec -- ts-node main.ts"
