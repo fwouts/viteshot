@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+package-lock.json
 
 # misc
 .DS_Store

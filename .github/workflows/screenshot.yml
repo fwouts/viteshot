@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name '🤖 GitHub Actions'
           git config user.email 'screenshot-bot@zenc.io'
-          git add __screenshots__
+          git add .
           if [[ `git status --porcelain` ]]; then
             current_branch=`git branch --show-current`
             if [ "$current_branch" = "master" ] | [ "$current_branch" = "main" ]; then
