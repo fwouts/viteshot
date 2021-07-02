@@ -1,6 +1,7 @@
-const playwright = require("viteshot/shooters/playwright");
+const playwrightShooter = require("viteshot/shooters/playwright");
+const playwright = require("playwright");
 
 module.exports = {
   framework: "svelte",
-  browser: playwright(),
+  browser: playwrightShooter(playwright.chromium),
 };
