@@ -3,5 +3,5 @@ const playwright = require("playwright");
 
 module.exports = {
   framework: "react",
-  browser: playwrightShooter(playwright.chromium),
+  browser: playwrightShooter(playwright.firefox),
 };
