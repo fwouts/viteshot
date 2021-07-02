@@ -9,19 +9,19 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/",
-    "release": "yarn build && cd dist && yarn publish --non-interactive",
-    "dev:local": "ts-node main.ts",
-    "dev:local:watch": "ts-node-dev --respawn --watch renderers,react-example,solid-example,svelte-example,vue-example main.ts",
-    "dev:percy": "percy exec -- ts-node main.ts"
+    "dev": "ts-node-dev src/cli.ts",
+    "release": "yarn build && cd dist && yarn publish --non-interactive"
   },
   "dependencies": {
     "assert-never": "^1.2.1",
+    "chalk": "^4.1.1",
     "connect": "^3.7.0",
     "fs-extra": "^10.0.0",
     "get-port": "^5.1.1",
     "glob": "^7.1.7",
     "vite": "^2.3.8",
-    "vite-react-jsx": "^1.1.1"
+    "vite-react-jsx": "^1.1.1",
+    "yargs": "^17.0.1"
   },
   "devDependencies": {
     "@percy/cli": "^1.0.0-beta.58",
@@ -32,6 +32,7 @@
     "@types/node": "^15.12.4",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
+    "@types/yargs": "^17.0.0",
     "playwright": "^1.12.3",
     "puppeteer": "^10.1.0",
     "rimraf": "^3.0.2",
@@ -46,11 +47,5 @@
     "vue": "3",
     "webpack": "^5.41.1",
     "webpack-cli": "^4.7.2"
-  },
-  "peerDependencies": {
-    "@percy/cli": "*",
-    "@percy/puppeteer": "*",
-    "playwright": "*",
-    "puppeteer": "*"
   }
 }
