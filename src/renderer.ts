@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import glob from "glob";
 import { Server } from "http";
 import path from "path";
+import { promisify } from "util";
 import * as vite from "vite";
 import viteReactJsx from "vite-react-jsx";
 
@@ -31,7 +32,7 @@ export async function startRenderer(options: {
   filePathPattern: string;
   port: number;
 }) {
-  const relativeFilePaths = glob.sync(options.filePathPattern, {
+  const relativeFilePaths = await promisify(glob)(options.filePathPattern, {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
   });
