@@ -3,5 +3,5 @@ const playwright = require("playwright");
 
 module.exports = {
   framework: "react",
-  browser: playwrightShooter(playwright.firefox),
+  browser: playwrightShooter(playwright.firefox, playwright.devices["Pixel 2"]),
 };
