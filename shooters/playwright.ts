@@ -3,14 +3,16 @@ import playwright from "playwright";
 import { BrowserConfig } from "../src/config";
 
 export default (
-  browserType: playwright.BrowserType<{}>
+  browserType: playwright.BrowserType<{}>,
+  contextOptions: playwright.BrowserContextOptions = {}
 ): BrowserConfig<playwright.Page> =>
   ({
     launchBrowser: async () => {
       const browser = await browserType.launch();
+      const context = await browser.newContext(contextOptions);
       return {
         newPage: async () => {
-          const page = await browser.newPage();
+          const page = await context.newPage();
           page
             .on("pageerror", ({ message }) => console.error(message))
             .on("requestfailed", (request) =>
