@@ -2,10 +2,12 @@ import path from "path";
 import playwright from "playwright";
 import { BrowserConfig } from "../src/config";
 
-export default (): BrowserConfig<playwright.Page> =>
+export default (
+  browserType: playwright.BrowserType<{}>
+): BrowserConfig<playwright.Page> =>
   ({
     launchBrowser: async () => {
-      const browser = await playwright.chromium.launch();
+      const browser = await browserType.launch();
       return {
         newPage: async () => {
           const page = await browser.newPage();
