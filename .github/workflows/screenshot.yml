@@ -27,9 +27,9 @@ jobs:
           path: |
             **/node_modules
             ~/.cache/ms-playwright
-          key: ${{ runner.OS }}-v2-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.OS }}-v3-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.OS }}-v2-yarn-
+            ${{ runner.OS }}-v3-yarn-
       - run: yarn --frozen-lockfile
       - run: yarn build
       - run: cd dist && npm link
@@ -38,25 +38,29 @@ jobs:
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
-          yarn viteshot
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
       - run: |
           cd solid-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
-          yarn viteshot
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
       - run: |
           cd svelte-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
-          yarn viteshot
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
       - run: |
           cd vue-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
-          yarn viteshot
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
       - name: Push screenshots
         run: |
           git config user.name '🤖 GitHub Actions'
