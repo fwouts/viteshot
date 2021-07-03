@@ -39,28 +39,28 @@ jobs:
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
-          npm unlink viteshot
+          rm -rf node_modules/viteshot
       - run: |
           cd solid-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
-          npm unlink viteshot
+          rm -rf node_modules/viteshot
       - run: |
           cd svelte-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
-          npm unlink viteshot
+          rm -rf node_modules/viteshot
       - run: |
           cd vue-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
-          npm unlink viteshot
+          rm -rf node_modules/viteshot
       - name: Push screenshots
         run: |
           git config user.name '🤖 GitHub Actions'
