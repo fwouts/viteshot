@@ -28,7 +28,9 @@ export async function initCommand(): Promise<void> {
   }
   const dependencies = packageInfo.dependencies || {};
   let framework: Framework;
-  if ("react" in dependencies) {
+  if ("preact" in dependencies) {
+    framework = "preact";
+  } else if ("react" in dependencies) {
     framework = "react";
   } else if ("solid-js" in dependencies) {
     framework = "solid";

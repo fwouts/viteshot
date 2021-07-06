@@ -1,6 +1,7 @@
 export interface Config<Page extends BasicPage> {
   framework: Framework;
   filePathPattern: string;
+  projectPath: string;
   browser: BrowserConfig<Page>;
 }
 
@@ -16,7 +17,7 @@ export const DEFAULT_CONFIG = {
   filePathPattern: "**/*.screenshot.@(jsx|tsx|vue|svelte)",
 } as const;
 
-export type Framework = "react" | "solid" | "svelte" | "vue";
+export type Framework = "preact" | "react" | "solid" | "svelte" | "vue";
 
 export interface BasicPage {
   exposeFunction(name: string, f: Function): Promise<void>;
