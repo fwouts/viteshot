@@ -27,5 +27,6 @@ export async function renderScreenshots(
       root.innerHTML = `<pre class="viteshot-error">${e.stack || e}</pre>`;
     }
     await window.__takeScreenshot__(name);
+    Preact.render(null, root);
   }
 }
