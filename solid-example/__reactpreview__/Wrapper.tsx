@@ -1,11 +1,6 @@
 import type { Component } from "solid-js";
+import styles from "./Wrapper.module.css";
 
 export const Wrapper: Component = (props) => (
-  <div
-    style={{
-      padding: 16,
-    }}
-  >
-    {props.children}
-  </div>
+  <div className={styles.Wrapper}>{props.children}</div>
 );
