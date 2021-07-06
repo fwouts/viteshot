@@ -9,10 +9,15 @@ export async function renderScreenshots(
   >
 ) {
   // TODO: Support Wrapper in Vue.
+  const root = document.getElementById("root")!;
   for (const [name, component] of components) {
-    createApp(component).mount("#root");
-    if (component.beforeScreenshot) {
-      await component.beforeScreenshot(document.getElementById("root")!);
+    try {
+      createApp(component).mount("#root");
+      if (component.beforeScreenshot) {
+        await component.beforeScreenshot(root);
+      }
+    } catch (e) {
+      root.innerHTML = `<pre>${e}</pre>`;
     }
     await window.__takeScreenshot__(name);
   }

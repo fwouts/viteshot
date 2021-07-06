@@ -13,14 +13,22 @@ export async function renderScreenshots(
   Wrapper: ((props: { children: JSX.Element }) => JSX.Element) | null
 ) {
   Wrapper ||= (props) => props.children;
+  const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
-    const detach = render(
-      () =>
-        createComponent(Wrapper!, { children: createComponent(Component, {}) }),
-      document.getElementById("root")!
-    );
-    if (Component.beforeScreenshot) {
-      await Component.beforeScreenshot(document.getElementById("root")!);
+    let detach: () => void = () => {};
+    try {
+      detach = render(
+        () =>
+          createComponent(Wrapper!, {
+            children: createComponent(Component, {}),
+          }),
+        root
+      );
+      if (Component.beforeScreenshot) {
+        await Component.beforeScreenshot(root);
+      }
+    } catch (e) {
+      root.innerHTML = `<pre>${e}</pre>`;
     }
     await window.__takeScreenshot__(name);
     detach();

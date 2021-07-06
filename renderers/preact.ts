@@ -12,13 +12,18 @@ export async function renderScreenshots(
   Wrapper: Preact.ComponentType<{}> | null
 ) {
   Wrapper ||= Preact.Fragment;
+  const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
-    Preact.render(
-      Preact.createElement(Wrapper, {}, Preact.createElement(Component, {})),
-      document.getElementById("root")!
-    );
-    if (Component.beforeScreenshot) {
-      await Component.beforeScreenshot(document.getElementById("root")!);
+    try {
+      Preact.render(
+        Preact.createElement(Wrapper, {}, Preact.createElement(Component, {})),
+        root
+      );
+      if (Component.beforeScreenshot) {
+        await Component.beforeScreenshot(root);
+      }
+    } catch (e) {
+      root.innerHTML = `<pre>${e}</pre>`;
     }
     await window.__takeScreenshot__(name);
   }
