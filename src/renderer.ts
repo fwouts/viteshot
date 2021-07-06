@@ -6,7 +6,6 @@ import path from "path";
 import { promisify } from "util";
 import * as vite from "vite";
 import { UserConfig } from "vite";
-import viteReactJsx from "vite-react-jsx";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { Framework, WrapperConfig } from "./config";
 
@@ -30,12 +29,28 @@ const frameworkConfiguration = {
             },
           };
         },
+        transform(code: string, id: string) {
+          if (id.endsWith("sx") && !code.includes(`from "preact"`)) {
+            return `import { h } from 'preact';\n${code}`;
+          }
+          return null;
+        },
       },
     ],
   },
   react: {
     defaultImports: false,
-    plugins: [viteReactJsx()],
+    plugins: [
+      {
+        name: "react",
+        transform(code: string, id: string) {
+          if (id.endsWith("sx") && !code.includes(`import React`)) {
+            return `import React from 'react';\n${code}`;
+          }
+          return null;
+        },
+      },
+    ],
   },
   solid: {
     defaultImports: false,
