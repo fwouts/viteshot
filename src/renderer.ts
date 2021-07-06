@@ -6,8 +6,32 @@ import path from "path";
 import { promisify } from "util";
 import * as vite from "vite";
 import viteReactJsx from "vite-react-jsx";
+import { Framework } from "./config";
 
 const frameworkConfiguration = {
+  preact: {
+    defaultImports: false,
+    plugins: [
+      {
+        name: "preact",
+        config() {
+          return {
+            esbuild: {
+              jsxFactory: "h",
+              jsxFragment: "Fragment",
+            },
+            resolve: {
+              alias: {
+                "react-dom/test-utils": "preact/test-utils",
+                "react-dom": "preact/compat",
+                react: "preact/compat",
+              },
+            },
+          };
+        },
+      },
+    ],
+  },
   react: {
     defaultImports: false,
     plugins: [viteReactJsx()],
@@ -27,7 +51,7 @@ const frameworkConfiguration = {
 } as const;
 
 export async function startRenderer(options: {
-  framework: "react" | "solid" | "svelte" | "vue";
+  framework: Framework;
   projectPath: string;
   filePathPattern: string;
   port: number;
@@ -37,10 +61,17 @@ export async function startRenderer(options: {
     cwd: options.projectPath,
   });
   const frameworkConfig = frameworkConfiguration[options.framework];
-  const rendererContent = `${await fs.readFile(
-    path.join(__dirname, "..", "renderers", options.framework + ".js"),
-    "utf8"
-  )}
+  const rendererBasePath = path.join(
+    __dirname,
+    "..",
+    "renderers",
+    options.framework
+  );
+  // Support both production (.js) and development (.ts).
+  const rendererPath = (await fs.pathExists(rendererBasePath + ".js"))
+    ? rendererBasePath + ".js"
+    : rendererBasePath + ".ts";
+  const rendererContent = `${await fs.readFile(rendererPath, "utf8")}
   ${relativeFilePaths
     .map(
       (componentFilePath, i) =>
@@ -86,7 +117,7 @@ export async function startRenderer(options: {
       {
         name: "virtual",
         load: async (id) => {
-          if (id !== "/__renderer__.jsx") {
+          if (id !== "/__renderer__.tsx") {
             return null;
           }
           return rendererContent;
@@ -112,7 +143,7 @@ export async function startRenderer(options: {
         </style>
         <body>
           <div id="root"></div>
-          <script type="module" src="/__renderer__.jsx"></script>
+          <script type="module" src="/__renderer__.tsx"></script>
         </body>
       </html>    
       `

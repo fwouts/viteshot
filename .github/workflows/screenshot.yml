@@ -34,6 +34,13 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
+          cd preact-example && \
+          yarn --frozen-lockfile && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
+      - run: |
           cd react-example && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
