@@ -24,7 +24,7 @@ export async function renderScreenshots(
         await component.beforeScreenshot(root);
       }
     } catch (e) {
-      root.innerHTML = `<pre>${e}</pre>`;
+      root.innerHTML = `<pre>${e}\n${e.stack}</pre>`;
     }
     await window.__takeScreenshot__(name);
   }
