@@ -7,6 +7,7 @@ import { promisify } from "util";
 import * as vite from "vite";
 import { UserConfig } from "vite";
 import viteReactJsx from "vite-react-jsx";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { Framework, WrapperConfig } from "./config";
 
 const frameworkConfiguration = {
@@ -122,6 +123,7 @@ export async function startRenderer(options: {
     ...options.vite,
     plugins: [
       ...frameworkConfig.plugins,
+      tsconfigPaths(),
       {
         name: "virtual",
         load: async (id) => {

@@ -21,6 +21,7 @@
     "glob": "^7.1.7",
     "vite": "^2.3.8",
     "vite-react-jsx": "^1.1.1",
+    "vite-tsconfig-paths": "^3.3.13",
     "yargs": "^17.0.1"
   },
   "devDependencies": {
