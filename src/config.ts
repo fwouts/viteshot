@@ -1,10 +1,18 @@
+import { UserConfig } from "vite";
+
 export interface Config<Page extends BasicPage> {
   framework: Framework;
   filePathPattern: string;
   projectPath: string;
+  wrapper?: WrapperConfig;
   browser: BrowserConfig<Page>;
+  vite?: UserConfig;
 }
 
+export interface WrapperConfig {
+  path: string;
+  componentName: string;
+}
 export interface BrowserConfig<Page extends BasicPage> {
   launchBrowser(): Promise<{
     newPage(): Promise<Page>;

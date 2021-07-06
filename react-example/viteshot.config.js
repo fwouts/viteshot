@@ -7,4 +7,8 @@ module.exports = {
     playwright.chromium,
     playwright.devices["Pixel 2"]
   ),
+  Wrapper: {
+    path: "__reactpreview__/Wrapper",
+    componentName: "Wrapper",
+  },
 };

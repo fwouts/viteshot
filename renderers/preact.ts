@@ -4,15 +4,17 @@ export async function renderScreenshots(
   components: Array<
     [
       string,
-      React.ComponentType<{}> & {
+      Preact.ComponentType<{}> & {
         beforeScreenshot?: (element: HTMLElement) => Promise<void>;
       }
     ]
-  >
+  >,
+  Wrapper: Preact.ComponentType<{}> | null
 ) {
+  Wrapper ||= Preact.Fragment;
   for (const [name, Component] of components) {
     Preact.render(
-      Preact.createElement(Component, {}),
+      Preact.createElement(Wrapper, {}, Preact.createElement(Component, {})),
       document.getElementById("root")!
     );
     if (Component.beforeScreenshot) {
