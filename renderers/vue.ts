@@ -1,4 +1,4 @@
-import { Component, createApp } from "vue";
+import { App, Component, createApp } from "vue";
 
 export async function renderScreenshots(
   components: Array<
@@ -12,8 +12,10 @@ export async function renderScreenshots(
   const root = document.getElementById("root")!;
   for (const [name, component] of components) {
     root.innerHTML = "";
+    let app: App | null = null;
     try {
-      createApp(component).mount("#root");
+      app = createApp(component);
+      app.mount("#root");
       if (component.beforeScreenshot) {
         await component.beforeScreenshot(root);
       }
@@ -21,5 +23,8 @@ export async function renderScreenshots(
       root.innerHTML = `<pre class="viteshot-error">${e.stack || e}</pre>`;
     }
     await window.__takeScreenshot__(name);
+    if (app) {
+      app.unmount();
+    }
   }
 }
