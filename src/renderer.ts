@@ -166,6 +166,10 @@ export async function startRenderer(options: {
           transition: none !important;
           animation: none !important;
         }
+
+        .viteshot-error {
+          color: #e00;
+        }
         </style>
         <body>
           <div id="root"></div>

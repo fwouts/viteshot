@@ -18,7 +18,7 @@ export async function renderScreenshots(
         await component.beforeScreenshot(root);
       }
     } catch (e) {
-      root.innerHTML = `<pre>${e}\n${e.stack}</pre>`;
+      root.innerHTML = `<pre class="viteshot-error">${e.stack || e}</pre>`;
     }
     await window.__takeScreenshot__(name);
   }
