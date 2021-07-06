@@ -14,6 +14,7 @@ export async function renderScreenshots(
   Wrapper ||= Preact.Fragment;
   const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
+    root.innerHTML = "";
     try {
       Preact.render(
         Preact.createElement(Wrapper, {}, Preact.createElement(Component, {})),

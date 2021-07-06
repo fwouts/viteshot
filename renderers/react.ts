@@ -15,6 +15,7 @@ export async function renderScreenshots(
   Wrapper ||= React.Fragment;
   const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
+    root.innerHTML = "";
     try {
       ReactDOM.render(
         React.createElement(Wrapper, {}, React.createElement(Component)),

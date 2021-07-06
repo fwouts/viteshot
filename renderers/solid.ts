@@ -15,6 +15,7 @@ export async function renderScreenshots(
   Wrapper ||= (props) => props.children;
   const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
+    root.innerHTML = "";
     let detach: () => void = () => {};
     try {
       detach = render(
