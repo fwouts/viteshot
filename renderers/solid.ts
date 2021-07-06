@@ -9,11 +9,14 @@ export async function renderScreenshots(
         beforeScreenshot?: (element: HTMLElement) => Promise<void>;
       }
     ]
-  >
+  >,
+  Wrapper: ((props: { children: JSX.Element }) => JSX.Element) | null
 ) {
+  Wrapper ||= (props) => props.children;
   for (const [name, Component] of components) {
     const detach = render(
-      () => createComponent(Component, {}),
+      () =>
+        createComponent(Wrapper!, { children: createComponent(Component, {}) }),
       document.getElementById("root")!
     );
     if (Component.beforeScreenshot) {

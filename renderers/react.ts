@@ -9,11 +9,13 @@ export async function renderScreenshots(
         beforeScreenshot?: (element: HTMLElement) => Promise<void>;
       }
     ]
-  >
+  >,
+  Wrapper: React.ComponentType<{}> | null
 ) {
+  Wrapper ||= React.Fragment;
   for (const [name, Component] of components) {
     ReactDOM.render(
-      React.createElement(Component),
+      React.createElement(Wrapper, {}, React.createElement(Component)),
       document.getElementById("root")
     );
     if (Component.beforeScreenshot) {

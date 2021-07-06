@@ -5,8 +5,9 @@ import { Server } from "http";
 import path from "path";
 import { promisify } from "util";
 import * as vite from "vite";
-import viteReactJsx from "vite-react-jsx";
-import { Framework } from "./config";
+import { UserConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { Framework, WrapperConfig } from "./config";
 
 const frameworkConfiguration = {
   preact: {
@@ -28,12 +29,28 @@ const frameworkConfiguration = {
             },
           };
         },
+        transform(code: string, id: string) {
+          if (id.endsWith("sx") && !code.includes(`from "preact"`)) {
+            return `import { h } from 'preact';\n${code}`;
+          }
+          return null;
+        },
       },
     ],
   },
   react: {
     defaultImports: false,
-    plugins: [viteReactJsx()],
+    plugins: [
+      {
+        name: "react",
+        transform(code: string, id: string) {
+          if (id.endsWith("sx") && !code.includes(`import React`)) {
+            return `import React from 'react';\n${code}`;
+          }
+          return null;
+        },
+      },
+    ],
   },
   solid: {
     defaultImports: false,
@@ -54,6 +71,8 @@ export async function startRenderer(options: {
   projectPath: string;
   filePathPattern: string;
   port: number;
+  wrapper?: WrapperConfig;
+  vite?: UserConfig;
 }) {
   const relativeFilePaths = await promisify(glob)(options.filePathPattern, {
     ignore: "**/node_modules/**",
@@ -71,6 +90,11 @@ export async function startRenderer(options: {
     ? rendererBasePath + ".js"
     : rendererBasePath + ".ts";
   const rendererContent = `${await fs.readFile(rendererPath, "utf8")}
+  ${
+    options.wrapper
+      ? `import { ${options.wrapper.componentName} as Wrapper } from '/${options.wrapper.path}';`
+      : "const Wrapper = null;"
+  }
   ${relativeFilePaths
     .map(
       (componentFilePath, i) =>
@@ -104,15 +128,17 @@ export async function startRenderer(options: {
     window.__done__ = () => {};
   }
 
-  renderScreenshots(components).then(__done__).catch(console.error);
+  renderScreenshots(components, Wrapper).then(__done__).catch(console.error);
   `;
   const viteServer = await vite.createServer({
     root: options.projectPath,
     server: {
       middlewareMode: true,
     },
+    ...options.vite,
     plugins: [
       ...frameworkConfig.plugins,
+      tsconfigPaths(),
       {
         name: "virtual",
         load: async (id) => {
@@ -122,6 +148,7 @@ export async function startRenderer(options: {
           return rendererContent;
         },
       },
+      ...(options.vite?.plugins || []),
     ],
   });
   const app = connect();

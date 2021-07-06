@@ -12,6 +12,7 @@ export async function renderScreenshots(
     ]
   >
 ) {
+  // TODO: Support Wrapper in Svelte.
   for (const [name, Component] of components) {
     const component = new Component({
       target: document.getElementById("root"),

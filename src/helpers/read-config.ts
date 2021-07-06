@@ -1,9 +1,8 @@
 import fs from "fs-extra";
-import getPort from "get-port";
 import path from "path";
 import { BasicPage, Config, DEFAULT_CONFIG } from "../config";
-import { fail } from "../helpers/fail";
-import { findFileUpwards } from "../helpers/find-file";
+import { fail } from "./fail";
+import { findFileUpwards } from "./find-file";
 
 const CONFIG_FILE_NAMES = ["viteshot.config.js", "viteshot.config.cjs"];
 
@@ -28,7 +27,6 @@ export async function readConfig<Page extends BasicPage>(
   }
   const config = require(configFilePath) as Partial<Config<any>>;
   const configFileName = path.basename(configFilePath);
-  const port = await getPort();
   if (!config.framework) {
     throw new Error(`Please specify \`framework\` in ${configFileName}`);
   }
@@ -40,5 +38,7 @@ export async function readConfig<Page extends BasicPage>(
     browser: config.browser,
     projectPath: config.projectPath || path.dirname(configFilePath),
     filePathPattern: config.filePathPattern || DEFAULT_CONFIG.filePathPattern,
+    vite: config.vite,
+    wrapper: config.wrapper,
   };
 }
