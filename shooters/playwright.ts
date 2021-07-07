@@ -26,11 +26,15 @@ export default (
       };
     },
     captureScreenshot: async (page: playwright.Page, name: string) => {
-      let prefixPath = options.output?.prefixPath;
-      if (prefixPath === undefined) {
-        prefixPath = "__screenshots__";
+      let prefixPath: string;
+      let suffixPath: string;
+      if (options.output) {
+        prefixPath = options.output.prefixPath || "";
+        suffixPath = options.output.prefixPath || "";
+      } else {
+        prefixPath = "";
+        suffixPath = `__screenshots__/${process.platform}`;
       }
-      const suffixPath = options.output?.suffixPath || "";
       const dirPath = path.dirname(name);
       const baseName = path.basename(name);
       const screenshotPath = path.resolve(

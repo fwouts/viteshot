@@ -6,10 +6,5 @@ const playwright = require("playwright");
  */
 module.exports = {
   framework: "vue",
-  browser: playwrightShooter(playwright.firefox, {
-    output: {
-      prefixPath: "",
-      suffixPath: `__screenshots__/${process.platform}`,
-    },
-  }),
+  browser: playwrightShooter(playwright.firefox),
 };
