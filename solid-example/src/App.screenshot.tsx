@@ -21,3 +21,7 @@ export const Clicked = () => {
 Clicked.beforeScreenshot = async (element: HTMLElement) => {
   element.querySelector<HTMLButtonElement>("#button")!.click();
 };
+
+export const ErrorScreenshot = () => {
+  throw new Error(`An error should be shown`);
+};
