@@ -29,15 +29,15 @@ export async function shootCommand(options: {
     await git.addConfig("user.name", "🤖 Viteshot");
     await git.addConfig("user.email", "viteshot-bot@zenc.io");
     await git.add(screenshotFilePaths);
-    await git.stash();
-    await git.pull();
-    await git.stash(["pop"]);
     const status = await git.status();
     const branch = await git.branch();
     if (status.files.length > 0) {
       if (MAIN_BRANCHES.has(branch.current)) {
         return fail(`🚨 Screenshots have changed on ${branch.current}!`);
       }
+      await git.stash();
+      await git.pull();
+      await git.stash(["pop"]);
       await git.commit("📸 Updated screenshots");
       await git.push();
       info("⚠️ Screenshots have been updated.");
