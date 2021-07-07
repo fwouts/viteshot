@@ -1,15 +1,7 @@
-const specialProps = new Set<string | symbol>([
-  "$$typeof",
-  "ref",
-  "constructor",
-  "parentNode",
-]);
+const specialProps = new Set<string | symbol>(["$$typeof", "ref"]);
 
 export function generateFakeProps(path: string[] = []): any {
   const requestedProps = new Set<string | symbol>();
-  setTimeout(() => {
-    console.error(requestedProps);
-  }, 10);
   return new Proxy(
     {},
     {
