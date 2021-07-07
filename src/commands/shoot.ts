@@ -3,7 +3,10 @@ import { readConfig } from "../helpers/read-config";
 import { startRenderer } from "../renderer";
 import { shoot } from "../shooter";
 
-export async function shootCommand(options: { config?: string }) {
+export async function shootCommand(options: {
+  config?: string;
+  push?: boolean;
+}) {
   const config = await readConfig(options.config);
   process.chdir(config.projectPath);
   const port = await getPort();
