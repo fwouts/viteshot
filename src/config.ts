@@ -18,7 +18,7 @@ export interface BrowserConfig<Page extends BasicPage> {
     newPage(): Promise<Page>;
     close(): Promise<void>;
   }>;
-  captureScreenshot(page: Page, name: string): Promise<void>;
+  captureScreenshot(page: Page, name: string): Promise<string | null>;
 }
 
 export const DEFAULT_CONFIG = {

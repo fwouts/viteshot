@@ -17,6 +17,7 @@ export default (): BrowserConfig<puppeteer.Page> =>
     },
     captureScreenshot: async (page, name) => {
       console.log(`Capturing: ${name}`);
-      return percySnapshot(page, name);
+      await percySnapshot(page, name);
+      return null;
     },
   } as const);

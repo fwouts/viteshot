@@ -33,10 +33,17 @@ export default (
       const suffixPath = options.output?.suffixPath || "";
       const dirPath = path.dirname(name);
       const baseName = path.basename(name);
+      const screenshotPath = path.resolve(
+        prefixPath,
+        dirPath,
+        suffixPath,
+        `${baseName}.png`
+      );
       console.log(`Capturing: ${name}`);
       await page.screenshot({
         fullPage: true,
-        path: path.join(prefixPath, dirPath, suffixPath, `${baseName}.png`),
+        path: screenshotPath,
       });
+      return screenshotPath;
     },
   } as const);

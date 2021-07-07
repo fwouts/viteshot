@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "rimraf": "^3.0.2",
     "vite": "^2.3.8",
     "vite-plugin-solid": "^2.0.0"
   },

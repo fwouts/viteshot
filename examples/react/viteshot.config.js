@@ -10,7 +10,7 @@ module.exports = {
     context: playwright.devices["Pixel 2"],
     output: {
       prefixPath: "",
-      suffixPath: "__screenshots__",
+      suffixPath: `__screenshots__/${process.platform}`,
     },
   }),
   wrapper: {

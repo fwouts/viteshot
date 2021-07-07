@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -34,61 +34,37 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
-          cd examples/preact && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          rm -rf __screenshots__ && \
-          yarn viteshot && \
-          rm -rf node_modules/viteshot
+          cd examples/preact
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot -p
+          yarn rimraf node_modules/viteshot
       - run: |
-          cd examples/react && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          rm -rf __screenshots__ && \
-          yarn viteshot && \
-          rm -rf node_modules/viteshot
+          cd examples/react
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot -p
+          yarn rimraf node_modules/viteshot
       - run: |
-          cd examples/solid && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          rm -rf __screenshots__ && \
-          yarn viteshot && \
-          rm -rf node_modules/viteshot
+          cd examples/solid
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot -p
+          yarn rimraf node_modules/viteshot
       - run: |
-          cd examples/svelte && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          rm -rf __screenshots__ && \
-          yarn viteshot && \
-          rm -rf node_modules/viteshot
+          cd examples/svelte
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot -p
+          yarn rimraf node_modules/viteshot
       - run: |
-          cd examples/vue && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          rm -rf __screenshots__ && \
-          yarn viteshot && \
-          rm -rf node_modules/viteshot
+          cd examples/vue
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot -p
+          yarn rimraf node_modules/viteshot
       - name: Erase Vite caches
         run: yarn rimraf "**/node_modules/.vite"
-      - name: Push screenshots
-        run: |
-          git config user.name '🤖 GitHub Actions'
-          git config user.email 'screenshot-bot@zenc.io'
-
-          git add .
-          if [[ `git status --porcelain` ]]; then
-            current_branch=`git branch --show-current`
-            if [ "$current_branch" = "master" ] | [ "$current_branch" = "main" ]; then
-              echo "🚨 Screenshots have changed on $current_branch!"
-              git status
-              exit 1
-            fi
-            git commit -m "🤖 Updated screenshots"
-            git push
-            echo "⚠️ Screenshots have been updated."
-          else
-            echo "✅ Screenshots have not changed."
-          fi
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
