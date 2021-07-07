@@ -112,7 +112,7 @@ export async function startRenderer(options: {
           return `[\`${componentBaseName}\`, componentModule${i}],`;
         } else {
           return `...Object.entries(componentModule${i}).map(([name, component]) => {
-              return [\`${componentBaseName}/\${name}\`, component];
+              return [\`${componentBaseName}:\${name}\`, component];
             }),`;
         }
       })
