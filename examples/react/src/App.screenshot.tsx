@@ -1,7 +1,9 @@
 import { useState } from "react";
 import AppComponent from "./App";
 
-export const HelloWorld = () => <div>Hi, World!</div>;
+export const HelloWorld = () => <Greet name="World" />;
+
+export const Greet = (props: { name: string }) => <div>Hi, {props.name}!</div>;
 
 export const App = () => <AppComponent />;
 

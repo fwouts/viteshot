@@ -14,6 +14,7 @@ export async function renderScreenshots(
     root.innerHTML = "";
     let app: App | null = null;
     try {
+      // TODO: Support auto-generated fake props.
       app = createApp(component);
       app.mount("#root");
       if (component.beforeScreenshot) {

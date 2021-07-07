@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { generateFakeProps } from "./helpers/fake-props";
 
 export async function renderScreenshots(
   components: Array<
@@ -18,7 +19,17 @@ export async function renderScreenshots(
     root.innerHTML = "";
     try {
       ReactDOM.render(
-        React.createElement(Wrapper, {}, React.createElement(Component)),
+        React.createElement(
+          Wrapper,
+          {},
+          {
+            $$typeof: Symbol.for("react.element"),
+            type: Component,
+            key: null,
+            ref: null,
+            props: generateFakeProps(),
+          }
+        ),
         root
       );
       if (Component.beforeScreenshot) {
