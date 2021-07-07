@@ -27,4 +27,5 @@ export async function shoot<Page extends BasicPage>({
   await page.goto(url);
   await donePromise;
   await browser.close();
+  return screenshotFilePaths;
 }

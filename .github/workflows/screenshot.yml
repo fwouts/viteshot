@@ -35,58 +35,40 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
+          git config --global user.name '🤖 Viteshot'
+          git config --global user.email 'viteshot-bot@zenc.io'
+      - run: |
           cd examples/preact
           yarn --frozen-lockfile
           npm link viteshot
-          yarn viteshot
+          yarn viteshot -p
           yarn rimraf node_modules/viteshot
       - run: |
           cd examples/react
           yarn --frozen-lockfile
           npm link viteshot
-          yarn viteshot
+          yarn viteshot -p
           yarn rimraf node_modules/viteshot
       - run: |
           cd examples/solid
           yarn --frozen-lockfile
           npm link viteshot
-          yarn viteshot
+          yarn viteshot -p
           yarn rimraf node_modules/viteshot
       - run: |
           cd examples/svelte
           yarn --frozen-lockfile
           npm link viteshot
-          yarn viteshot
+          yarn viteshot -p
           yarn rimraf node_modules/viteshot
       - run: |
           cd examples/vue
           yarn --frozen-lockfile
           npm link viteshot
-          yarn viteshot
+          yarn viteshot -p
           yarn rimraf node_modules/viteshot
       - name: Erase Vite caches
         run: yarn rimraf "**/node_modules/.vite"
-      - name: Push screenshots
-        run: |
-          git config user.name '🤖 Viteshot'
-          git config user.email 'viteshot-bot@zenc.io'
-
-          git add .
-          if [ -n "$(git status --porcelain)" ]; then
-            current_branch=`git branch --show-current`
-            if [ "$current_branch" = "master" ] | [ "$current_branch" = "main" ]; then
-              echo "🚨 Screenshots have changed on $current_branch!"
-              git status
-              exit 1
-            fi
-            git commit -m "📸 Updated screenshots"
-            # TODO: Handle race conditions between two parallel jobs.
-            git pull --rebase
-            git push
-            echo "⚠️ Screenshots have been updated."
-          else
-            echo "✅ Screenshots have not changed."
-          fi
       - uses: actions/upload-artifact@v2
         if: failure()
         with:

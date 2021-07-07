@@ -14,11 +14,18 @@ yargs(hideBin(process.argv))
     ["*", "shoot"],
     "captures screenshots",
     (yargs) => {
-      return yargs.option("config", {
-        alias: "c",
-        describe: "Path of a config file",
-        type: "string",
-      });
+      return yargs
+        .option("config", {
+          alias: "c",
+          describe: "Path of a config file",
+          type: "string",
+        })
+        .option("push", {
+          alias: "p",
+          describe:
+            "Automatically create a commit with updated screenshots and push it",
+          type: "boolean",
+        });
     },
     async (args) => {
       await shootCommand(args);
