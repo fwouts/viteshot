@@ -35,6 +35,7 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
+<<<<<<< HEAD
           cd examples/preact
           yarn --frozen-lockfile
           npm link viteshot
@@ -64,6 +65,42 @@ jobs:
           npm link viteshot
           yarn viteshot
           yarn rimraf node_modules/viteshot
+=======
+          cd examples/preact && \
+          yarn --frozen-lockfile && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
+      - run: |
+          cd examples/react && \
+          yarn --frozen-lockfile && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
+      - run: |
+          cd examples/solid && \
+          yarn --frozen-lockfile && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
+      - run: |
+          cd examples/svelte && \
+          yarn --frozen-lockfile && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
+      - run: |
+          cd examples/vue && \
+          yarn --frozen-lockfile && \
+          npm link viteshot && \
+          rm -rf __screenshots__ && \
+          yarn viteshot && \
+          rm -rf node_modules/viteshot
+>>>>>>> main
       - name: Erase Vite caches
         run: yarn rimraf "**/node_modules/.vite"
       - name: Push screenshots

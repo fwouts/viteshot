@@ -9,7 +9,7 @@ module.exports = {
   browser: playwrightShooter(playwright.firefox, {
     output: {
       prefixPath: "",
-      suffixPath: `__screenshots__/${process.platform}`,
+      suffixPath: "__screenshots__",
     },
   }),
   wrapper: {
