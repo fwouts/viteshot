@@ -19,11 +19,7 @@ export default (
       return {
         newPage: async () => {
           const page = await context.newPage();
-          page
-            .on("pageerror", ({ message }) => console.error(message))
-            .on("requestfailed", (request) =>
-              console.warn(`${request.failure()!.errorText} ${request.url()}`)
-            );
+          page.on("pageerror", ({ message }) => console.error(message));
           return page;
         },
         close: () => browser.close(),
