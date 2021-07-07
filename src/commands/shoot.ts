@@ -29,7 +29,7 @@ export async function shootCommand(options: {
     await git.add(screenshotFilePaths);
     await git.stash();
     await git.pull();
-    await git.stash(["--pop"]);
+    await git.stash(["pop"]);
     const status = await git.status();
     const branch = await git.branch();
     if (status.files.length > 0) {
