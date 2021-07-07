@@ -35,5 +35,15 @@ export default [
 ];
 
 function allFiles(dirPath) {
-  return fs.readdirSync(dirPath).map((f) => path.join(dirPath, f));
+  return fs.readdirSync(dirPath).flatMap((f) => {
+    const filePath = path.join(dirPath, f);
+    const stat = fs.statSync(filePath);
+    if (stat.isFile()) {
+      return [filePath];
+    } else if (stat.isDirectory()) {
+      return [...allFiles(filePath)];
+    } else {
+      return [];
+    }
+  });
 }
