@@ -26,6 +26,8 @@ export async function shootCommand(options: {
   await stopRenderer();
   if (options.push) {
     const git = simpleGit();
+    await git.addConfig("user.name", "🤖 Viteshot");
+    await git.addConfig("user.email", "viteshot-bot@zenc.io");
     await git.add(screenshotFilePaths);
     await git.stash();
     await git.pull();

@@ -34,9 +34,6 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
-          git config --global user.name '🤖 Viteshot'
-          git config --global user.email 'viteshot-bot@zenc.io'
-      - run: |
           cd examples/preact
           yarn --frozen-lockfile
           npm link viteshot
