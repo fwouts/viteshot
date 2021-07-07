@@ -34,34 +34,34 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
-          cd preact-example && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          yarn viteshot && \
+          cd preact-example
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot
           rm -rf node_modules/viteshot
       - run: |
-          cd react-example && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          yarn viteshot && \
+          cd react-example
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot
           rm -rf node_modules/viteshot
       - run: |
-          cd solid-example && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          yarn viteshot && \
+          cd solid-example
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot
           rm -rf node_modules/viteshot
       - run: |
-          cd svelte-example && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          yarn viteshot && \
+          cd svelte-example
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot
           rm -rf node_modules/viteshot
       - run: |
-          cd vue-example && \
-          yarn --frozen-lockfile && \
-          npm link viteshot && \
-          yarn viteshot && \
+          cd vue-example
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot
           rm -rf node_modules/viteshot
       - name: Erase Vite caches
         run: yarn rimraf "**/node_modules/.vite"
