@@ -34,35 +34,35 @@ jobs:
       - run: yarn build
       - run: cd dist && npm link
       - run: |
-          cd preact-example && \
+          cd examples/preact && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
           rm -rf node_modules/viteshot
       - run: |
-          cd react-example && \
+          cd examples/react && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
           rm -rf node_modules/viteshot
       - run: |
-          cd solid-example && \
+          cd examples/solid && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
           rm -rf node_modules/viteshot
       - run: |
-          cd svelte-example && \
+          cd examples/svelte && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
           yarn viteshot && \
           rm -rf node_modules/viteshot
       - run: |
-          cd vue-example && \
+          cd examples/vue && \
           yarn --frozen-lockfile && \
           npm link viteshot && \
           rm -rf __screenshots__ && \
