@@ -68,6 +68,8 @@ jobs:
           rm -rf __screenshots__ && \
           yarn viteshot && \
           rm -rf node_modules/viteshot
+      - name: Erase Vite caches
+        run: yarn rimraf "**/node_modules/.vite"
       - name: Push screenshots
         run: |
           git config user.name '🤖 GitHub Actions'
