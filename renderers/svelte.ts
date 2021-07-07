@@ -1,11 +1,16 @@
 import { SvelteComponent } from "svelte";
+// @ts-ignore
+import { generateFakeProps } from "viteshot/renderers/helpers/fake-props";
 
 export async function renderScreenshots(
   components: Array<
     [
       string,
       {
-        new (options: { target: HTMLElement | null }): SvelteComponent & {
+        new (options: {
+          target: HTMLElement | null;
+          props: any;
+        }): SvelteComponent & {
           beforeScreenshot?: (element: HTMLElement) => Promise<void>;
         };
       }
@@ -19,6 +24,7 @@ export async function renderScreenshots(
     try {
       const component = new Component({
         target: root,
+        props: generateFakeProps(),
       });
       if (component.beforeScreenshot) {
         await component.beforeScreenshot(root);

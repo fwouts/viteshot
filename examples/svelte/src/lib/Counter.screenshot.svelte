@@ -1,9 +1,14 @@
 <script lang="ts">
   import Counter from "./Counter.svelte";
 
+  export let title: string;
+
   export function beforeScreenshot(element: HTMLElement) {
     element.querySelector("button")!.click();
   }
 </script>
 
-<Counter />
+<div>
+  <h1>{title}</h1>
+  <Counter />
+</div>
