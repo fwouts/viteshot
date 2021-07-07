@@ -30,7 +30,7 @@ export default (
       let suffixPath: string;
       if (options.output) {
         prefixPath = options.output.prefixPath || "";
-        suffixPath = options.output.prefixPath || "";
+        suffixPath = options.output.suffixPath || "";
       } else {
         prefixPath = "";
         suffixPath = `__screenshots__/${process.platform}`;
