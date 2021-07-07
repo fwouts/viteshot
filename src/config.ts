@@ -1,12 +1,12 @@
-import { UserConfig } from "vite";
+import * as vite from "vite";
 
-export interface Config<Page extends BasicPage> {
+export interface UserConfig<Page extends BasicPage> {
   framework: Framework;
   filePathPattern: string;
   projectPath: string;
   wrapper?: WrapperConfig;
   browser: BrowserConfig<Page>;
-  vite?: UserConfig;
+  vite?: vite.UserConfig;
 }
 
 export interface WrapperConfig {
