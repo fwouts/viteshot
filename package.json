@@ -3,7 +3,7 @@
   "version": "0.0.0-dev",
   "author": "François Wouts <f@zenc.io>",
   "license": "MIT",
-  "main": "dist",
+  "types": "src/index.d.ts",
   "bin": {
     "viteshot": "lib/cli.js"
   },

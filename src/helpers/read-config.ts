@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
-import { BasicPage, Config, DEFAULT_CONFIG } from "../config";
+import { BasicPage, DEFAULT_CONFIG, UserConfig } from "../config";
 import { fail } from "./fail";
 import { findFileUpwards } from "./find-file";
 
@@ -8,7 +8,7 @@ const CONFIG_FILE_NAMES = ["viteshot.config.js", "viteshot.config.cjs"];
 
 export async function readConfig<Page extends BasicPage>(
   customConfigFilePath?: string
-): Promise<Config<Page>> {
+): Promise<UserConfig<Page>> {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
     : await findFileUpwards(...CONFIG_FILE_NAMES);
@@ -25,7 +25,7 @@ export async function readConfig<Page extends BasicPage>(
   } catch {
     return fail(`Unable to access config file: ${configFilePath}`);
   }
-  const config = require(configFilePath) as Partial<Config<any>>;
+  const config = require(configFilePath) as Partial<UserConfig<any>>;
   const configFileName = path.basename(configFilePath);
   if (!config.framework) {
     throw new Error(`Please specify \`framework\` in ${configFileName}`);

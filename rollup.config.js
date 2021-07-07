@@ -4,9 +4,11 @@ import { preserveShebangs } from "rollup-plugin-preserve-shebangs";
 import typescript from "rollup-plugin-typescript2";
 
 const typescriptPlugin = typescript({
+  useTsconfigDeclarationDir: true,
   tsconfigOverride: {
     compilerOptions: {
       module: "esnext",
+      declarationDir: "dist",
     },
   },
 });
