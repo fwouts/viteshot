@@ -26,8 +26,8 @@ export async function shootCommand(options: {
   await stopRenderer();
   if (options.push) {
     const git = simpleGit();
-    await git.pull(["--rebase"]);
     await git.add(screenshotFilePaths);
+    await git.pull(["--rebase"]);
     const status = await git.status();
     const branch = await git.branch();
     if (status.files.length > 0) {
