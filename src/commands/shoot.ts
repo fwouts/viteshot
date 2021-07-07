@@ -38,6 +38,7 @@ export async function shootCommand(options: {
       await git.stash();
       await git.pull();
       await git.stash(["pop"]);
+      await git.add(screenshotFilePaths);
       await git.commit("📸 Updated screenshots");
       await git.push();
       info("⚠️ Screenshots have been updated.");
