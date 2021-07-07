@@ -1,5 +1,3 @@
-const specialProps = new Set<string | symbol>(["$$typeof", "ref"]);
-
 export function generateFakeProps(path: string[] = []): any {
   const requestedProps = new Set<string | symbol>();
   return new Proxy(
@@ -7,9 +5,6 @@ export function generateFakeProps(path: string[] = []): any {
     {
       get: function (target, prop, receiver) {
         requestedProps.add(prop);
-        if (specialProps.has(prop) || prop.toString().startsWith("__")) {
-          return undefined;
-        }
         const nestedPath = [...path, prop.toString()];
         if (prop == "hasOwnProperty") {
           return (prop: string | symbol) => {
