@@ -39,40 +39,30 @@ jobs:
           npm link viteshot
           yarn viteshot -p
           yarn rimraf node_modules/viteshot
-        env:
-          DEBUG: simple-git,simple-git:*
       - run: |
           cd examples/react
           yarn --frozen-lockfile
           npm link viteshot
           yarn viteshot -p
           yarn rimraf node_modules/viteshot
-        env:
-          DEBUG: simple-git,simple-git:*
       - run: |
           cd examples/solid
           yarn --frozen-lockfile
           npm link viteshot
           yarn viteshot -p
           yarn rimraf node_modules/viteshot
-        env:
-          DEBUG: simple-git,simple-git:*
       - run: |
           cd examples/svelte
           yarn --frozen-lockfile
           npm link viteshot
           yarn viteshot -p
           yarn rimraf node_modules/viteshot
-        env:
-          DEBUG: simple-git,simple-git:*
       - run: |
           cd examples/vue
           yarn --frozen-lockfile
           npm link viteshot
           yarn viteshot -p
           yarn rimraf node_modules/viteshot
-        env:
-          DEBUG: simple-git,simple-git:*
       - name: Erase Vite caches
         run: yarn rimraf "**/node_modules/.vite"
       - uses: actions/upload-artifact@v2
