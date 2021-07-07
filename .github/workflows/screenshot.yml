@@ -71,7 +71,7 @@ jobs:
           git config user.email 'viteshot-bot@zenc.io'
 
           git add .
-          if [[ `git status --porcelain` ]]; then
+          if [ -n "$(git status --porcelain)" ]; then
             current_branch=`git branch --show-current`
             if [ "$current_branch" = "master" ] | [ "$current_branch" = "main" ]; then
               echo "🚨 Screenshots have changed on $current_branch!"
