@@ -9,11 +9,7 @@ export default (): BrowserConfig<puppeteer.Page> =>
       return {
         newPage: async () => {
           const page = await browser.newPage();
-          page
-            .on("pageerror", ({ message }) => console.error(message))
-            .on("requestfailed", (request) =>
-              console.warn(`${request.failure()!.errorText} ${request.url()}`)
-            );
+          page.on("pageerror", ({ message }) => console.error(message));
           return page;
         },
         close: () => browser.close(),
