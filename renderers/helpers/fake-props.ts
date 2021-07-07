@@ -24,7 +24,7 @@ export function generateFakeProps(path: string[] = []): any {
             : 0;
         }
         if (prop === "0") {
-          return `${cleanPath(path)}`;
+          return pathToString(path);
         }
         if (prop === Symbol.iterator) {
           return [][Symbol.iterator];
@@ -36,12 +36,12 @@ export function generateFakeProps(path: string[] = []): any {
                 return 0;
               case "string":
               default:
-                return cleanPath(path);
+                return pathToString(path);
             }
           };
         }
         if (prop === "toString") {
-          return () => `${cleanPath(nestedPath)}`;
+          return () => pathToString(nestedPath);
         }
         return generateFakeProps(nestedPath);
       },
@@ -53,6 +53,6 @@ export function generateFakeProps(path: string[] = []): any {
   );
 }
 
-function cleanPath(path: string[]) {
+function pathToString(path: string[]) {
   return `{${path.filter((segment) => !segment.startsWith("$$")).join(".")}}`;
 }
