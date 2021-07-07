@@ -5,6 +5,7 @@ import { shoot } from "../shooter";
 
 export async function shootCommand(options: { config?: string }) {
   const config = await readConfig(options.config);
+  process.chdir(config.projectPath);
   const port = await getPort();
   const stopRenderer = await startRenderer({
     ...config,
