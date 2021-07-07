@@ -78,7 +78,7 @@ export async function startRenderer(options: {
     cwd: options.projectPath,
   });
   const frameworkConfig = frameworkConfiguration[options.framework];
-  const rendererBasePath = path.join(
+  const rendererBasePath = path.resolve(
     __dirname,
     "..",
     "renderers",
