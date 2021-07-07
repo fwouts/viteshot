@@ -28,6 +28,7 @@ export default [
   },
   {
     preserveModules: true,
+    external: ["viteshot"],
     input: allFiles("renderers"),
     output: [{ dir: "dist/renderers", format: "esm" }],
     plugins: [typescriptPlugin],

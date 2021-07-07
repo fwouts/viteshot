@@ -1,4 +1,5 @@
 import connect from "connect";
+import fs from "fs-extra";
 import glob from "glob";
 import { Server } from "http";
 import path from "path";
@@ -78,13 +79,17 @@ export async function startRenderer(options: {
     cwd: options.projectPath,
   });
   const frameworkConfig = frameworkConfiguration[options.framework];
-  const rendererBasePath = path.resolve(
+  const rendererBasePath = path.join(
     __dirname,
     "..",
     "renderers",
     options.framework
   );
-  const rendererContent = `import { renderScreenshots } from "${rendererBasePath}";
+  // Support both production (.js) and development (.ts).
+  const rendererPath = (await fs.pathExists(rendererBasePath + ".js"))
+    ? rendererBasePath + ".js"
+    : rendererBasePath + ".ts";
+  const rendererContent = `${await fs.readFile(rendererPath, "utf8")}
   ${
     options.wrapper
       ? `import { ${options.wrapper.componentName} as Wrapper } from '/${options.wrapper.path}';`

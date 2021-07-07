@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { generateFakeProps } from "./helpers/fake-props";
+// @ts-ignore
+import { generateFakeProps } from "viteshot/renderers/helpers/fake-props";
 
 export async function renderScreenshots(
   components: Array<

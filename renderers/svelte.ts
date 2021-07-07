@@ -1,5 +1,6 @@
 import { SvelteComponent } from "svelte";
-import { generateFakeProps } from "./helpers/fake-props";
+// @ts-ignore
+import { generateFakeProps } from "viteshot/renderers/helpers/fake-props";
 
 export async function renderScreenshots(
   components: Array<
