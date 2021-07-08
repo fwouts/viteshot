@@ -22,8 +22,9 @@ export async function shootCommand(options: {
     screenshotPaths = await config.shooter.shoot(`http://localhost:${port}`);
   } catch (e) {
     return fail(e.message);
+  } finally {
+    await stopRenderer();
   }
-  await stopRenderer();
   if (options.push) {
     const git = simpleGit();
     await git.addConfig("user.name", "🤖 Viteshot");
@@ -46,5 +47,6 @@ export async function shootCommand(options: {
       info("✅ Screenshots have not changed.");
     }
   }
-  return info("All done.");
+  info("All done.");
+  return process.exit(0);
 }
