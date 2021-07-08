@@ -8,4 +8,6 @@ module.exports = {
   framework: "svelte",
   shooter: playwrightShooter(playwright.firefox),
   filePathPattern: "**/*.screenshot.svelte",
+  // TODO: Figure out why the default Vite config results in problems.
+  vite: {},
 };
