@@ -8,7 +8,7 @@
     "viteshot": "lib/cli.js"
   },
   "scripts": {
-    "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/",
+    "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/ && cp README.md dist/",
     "dev": "ts-node src/cli.ts",
     "dev:watch": "ts-node-dev src/cli.ts",
     "release": "yarn build && cd dist && yarn publish --non-interactive"
