@@ -45,5 +45,5 @@ export async function shootCommand(options: {
       info("✅ Screenshots have not changed.");
     }
   }
-  return;
+  return info("All done.");
 }

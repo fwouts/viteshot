@@ -9,8 +9,7 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/",
-    "dev": "ts-node src/cli.ts",
-    "dev:watch": "ts-node-dev --watch renderers src/cli.ts",
+    "dev": "ts-node-dev src/cli.ts",
     "release": "yarn build && cd dist && yarn publish --non-interactive"
   },
   "dependencies": {
