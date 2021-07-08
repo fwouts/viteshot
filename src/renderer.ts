@@ -79,6 +79,7 @@ export async function startRenderer(options: {
   wrapper?: WrapperConfig;
   vite?: UserConfig;
 }) {
+  process.chdir(options.projectPath);
   const relativeFilePaths = await promisify(glob)(options.filePathPattern, {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
