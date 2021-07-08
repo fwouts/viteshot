@@ -11,6 +11,7 @@ import { Framework, WrapperConfig } from "./config";
 
 const frameworkConfiguration = {
   preact: {
+    packages: ["preact"],
     defaultImports: false,
     plugins: [
       {
@@ -39,6 +40,7 @@ const frameworkConfiguration = {
     ],
   },
   react: {
+    packages: ["react", "react-dom"],
     defaultImports: false,
     plugins: [
       {
@@ -53,14 +55,17 @@ const frameworkConfiguration = {
     ],
   },
   solid: {
+    packages: ["solid-js"],
     defaultImports: false,
     plugins: [],
   },
   svelte: {
+    packages: ["svelte"],
     defaultImports: true,
     plugins: [],
   },
   vue: {
+    packages: ["vue"],
     defaultImports: true,
     plugins: [],
   },
@@ -141,7 +146,11 @@ export async function startRenderer(options: {
       middlewareMode: true,
     },
     optimizeDeps: {
-      entries: relativeFilePaths,
+      entries: [
+        ...(options.wrapper ? [options.wrapper.path] : []),
+        ...relativeFilePaths,
+      ],
+      include: [...frameworkConfig.packages],
     },
     ...options.vite,
     plugins: [
