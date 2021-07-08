@@ -27,6 +27,13 @@ export default (
   const seenDirPaths = new Set<string>();
   return {
     launchBrowser: async () => {
+      // Delete all old screenshots if they live in a top-level directory.
+      if (prefixPath) {
+        await fs.promises.rm(prefixPath, {
+          recursive: true,
+          force: true,
+        });
+      }
       // Start the browser.
       const browser = await browserType.launch();
       const context = await browser.newContext(options.context);
