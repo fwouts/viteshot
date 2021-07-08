@@ -18,7 +18,7 @@ export async function shootCommand(options: {
     ...config,
     port,
   });
-  const screenshotFilePaths = await shoot({
+  const screenshotPaths = await shoot({
     url: `http://localhost:${port}`,
     browserConfig: config.browser,
   });
@@ -27,7 +27,7 @@ export async function shootCommand(options: {
     const git = simpleGit();
     await git.addConfig("user.name", "🤖 Viteshot");
     await git.addConfig("user.email", "viteshot-bot@zenc.io");
-    await git.add(screenshotFilePaths);
+    await git.add(screenshotPaths);
     const status = await git.status();
     const branch = await git.branch();
     if (status.files.length > 0) {
@@ -37,7 +37,7 @@ export async function shootCommand(options: {
       await git.stash();
       await git.pull();
       await git.stash(["pop"]);
-      await git.add(screenshotFilePaths);
+      await git.add(screenshotPaths);
       await git.commit("📸 Updated screenshots");
       await git.push();
       info("⚠️ Screenshots have been updated.");

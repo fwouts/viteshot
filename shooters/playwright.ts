@@ -70,7 +70,7 @@ export default (
         fullPage: true,
         path: screenshotPath,
       });
-      return screenshotPath;
+      return screenshotDirPath;
     },
   };
 };
