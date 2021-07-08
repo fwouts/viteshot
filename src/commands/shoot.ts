@@ -13,7 +13,6 @@ export async function shootCommand(options: {
   push?: boolean;
 }) {
   const config = await readConfig(options.config);
-  process.chdir(config.projectPath);
   const port = await getPort();
   const stopRenderer = await startRenderer({
     ...config,
