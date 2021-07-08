@@ -2,6 +2,8 @@ import path from "path";
 import playwright from "playwright";
 import { BrowserConfig } from "../src/config";
 
+const DEFAULT_TIMEOUT_MILLIS = 2 * 60 * 1000;
+
 export default (
   browserType: playwright.BrowserType<{}>,
   options: {
@@ -19,6 +21,7 @@ export default (
       return {
         newPage: async () => {
           const page = await context.newPage();
+          page.setDefaultTimeout(DEFAULT_TIMEOUT_MILLIS);
           page.on("pageerror", ({ message }) => console.error(message));
           return page;
         },
