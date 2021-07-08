@@ -9,11 +9,10 @@ export default (): Shooter => ({
       browser = await puppeteer.launch();
       const page = await browser.newPage();
       let done!: (errorMessage?: string) => void;
-      let errorMessage: string | null = null;
-      const donePromise = new Promise<void>((resolve) => {
-        done = (receivedErrorMessage) => {
-          if (receivedErrorMessage) {
-            errorMessage = receivedErrorMessage;
+      const donePromise = new Promise<void>((resolve, reject) => {
+        done = (errorMessage) => {
+          if (errorMessage) {
+            reject(errorMessage);
           }
           resolve();
         };

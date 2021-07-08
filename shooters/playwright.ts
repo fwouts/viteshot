@@ -73,11 +73,10 @@ export default (
               }
             );
             let done!: (errorMessage?: string) => void;
-            let errorMessage: string | null = null;
-            const donePromise = new Promise<void>((resolve) => {
-              done = (receivedErrorMessage) => {
-                if (receivedErrorMessage) {
-                  errorMessage = receivedErrorMessage;
+            const donePromise = new Promise<void>((resolve, reject) => {
+              done = (errorMessage) => {
+                if (errorMessage) {
+                  reject(errorMessage);
                 }
                 resolve();
               };
@@ -87,7 +86,6 @@ export default (
             return donePromise;
           }
         );
-        console.error(pages);
         await Promise.all(pages);
       } finally {
         if (browser) {
