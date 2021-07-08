@@ -8,11 +8,12 @@ export default (): Shooter => ({
     try {
       browser = await puppeteer.launch();
       const page = await browser.newPage();
+      let errorMessage: string | null = null;
       let done!: (errorMessage?: string) => void;
-      const donePromise = new Promise<void>((resolve, reject) => {
-        done = (errorMessage) => {
-          if (errorMessage) {
-            reject(errorMessage);
+      const donePromise = new Promise<void>((resolve) => {
+        done = (receivedErrorMessage) => {
+          if (receivedErrorMessage) {
+            errorMessage = receivedErrorMessage;
           }
           resolve();
         };
@@ -24,6 +25,9 @@ export default (): Shooter => ({
       await page.exposeFunction("__done__", done);
       await page.goto(url);
       await donePromise;
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
       return [];
     } finally {
       if (browser) {
