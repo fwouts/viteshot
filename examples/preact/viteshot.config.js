@@ -6,7 +6,7 @@ const playwright = require("playwright");
  */
 module.exports = {
   framework: "preact",
-  browser: playwrightShooter(playwright.chromium, {
+  shooter: playwrightShooter(playwright.chromium, {
     contexts: {
       laptop: {
         viewport: {

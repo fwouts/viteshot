@@ -1,13 +1,9 @@
 import fs from "fs";
 import path from "path";
 import playwright from "playwright";
-import { BasicPage, BrowserConfig } from "../src/config";
+import { Shooter } from "../src/config";
 
 const DEFAULT_TIMEOUT_MILLIS = 2 * 60 * 1000;
-
-interface PlaywrightMetaPage extends BasicPage {
-  screenshot(page: string): Promise<void>;
-}
 
 export default (
   browserType: playwright.BrowserType<{}>,
@@ -18,7 +14,7 @@ export default (
       suffixPath?: string;
     };
   } = {}
-): BrowserConfig<PlaywrightMetaPage> => {
+): Shooter => {
   let prefixPath: string;
   let suffixPath: string;
   if (options.output) {
@@ -28,9 +24,9 @@ export default (
     prefixPath = "";
     suffixPath = `__screenshots__/${process.platform}`;
   }
-  const seenDirPaths = new Set<string>();
+  const screenshotPaths = new Set<string>();
   return {
-    launchBrowser: async () => {
+    shoot: async (url) => {
       // Delete all old screenshots if they live in a top-level directory.
       if (prefixPath) {
         await fs.promises.rm(prefixPath, {
@@ -38,83 +34,67 @@ export default (
           force: true,
         });
       }
-      // Start the browser.
-      const browser = await browserType.launch();
-      const contexts = await Promise.all(
-        Object.entries(options.contexts || { "": {} }).map(
-          async ([name, contextOptions]) => ({
-            name,
-            context: await browser.newContext(contextOptions),
-          })
-        )
-      );
-      return {
-        newPage: async () => {
-          const pages: Record<string, playwright.Page> = {};
-          for (const { name, context } of contexts) {
+      let browser!: playwright.Browser;
+      try {
+        browser = await browserType.launch();
+        const pages = Object.entries(options.contexts || { "": {} }).map(
+          async ([contextName, contextOptions]) => {
+            const context = await browser.newContext(contextOptions);
             const page = await context.newPage();
             page.setDefaultTimeout(DEFAULT_TIMEOUT_MILLIS);
-            page.on("pageerror", ({ message }) => console.error(message));
-            pages[name] = page;
-          }
-          return {
-            exposeFunction: async (functionName, f) => {
-              await Promise.all(
-                Object.values(pages).map((page) =>
-                  page.exposeFunction(functionName, f)
-                )
-              );
-            },
-            goto: async (url) => {
-              await Promise.all(
-                Object.values(pages).map((page) => page.goto(url))
-              );
-            },
-            screenshot: async (screenshotPath: string) => {
-              const dirPath = path.dirname(screenshotPath);
-              const baseName = path.basename(screenshotPath);
-              await Promise.all(
-                Object.entries(pages).map(([contextName, page]) => {
-                  const filePath = path.join(
-                    dirPath,
-                    contextName,
-                    `${baseName}.png`
-                  );
-                  console.log(
-                    `Capturing: ${path.relative(process.cwd(), filePath)}`
-                  );
-                  return page.screenshot({
-                    fullPage: true,
-                    path: filePath,
+            await page.exposeFunction(
+              "__takeScreenshot__",
+              async (name: string) => {
+                const dirPath = path.dirname(name);
+                const baseName = path.basename(name);
+                const screenshotPath = path.resolve(
+                  prefixPath,
+                  dirPath,
+                  suffixPath,
+                  contextName,
+                  `${baseName}.png`
+                );
+                const screenshotDirPath = path.dirname(screenshotPath);
+                if (suffixPath && !screenshotPaths.has(screenshotDirPath)) {
+                  // Ensure the directory is clean (delete old screenshots).
+                  screenshotPaths.add(screenshotDirPath);
+                  await fs.promises.rm(screenshotDirPath, {
+                    recursive: true,
+                    force: true,
                   });
-                })
-              );
-            },
-          };
-        },
-        close: () => browser.close(),
-      };
-    },
-    captureScreenshot: async (page: PlaywrightMetaPage, name: string) => {
-      const dirPath = path.dirname(name);
-      const baseName = path.basename(name);
-      const screenshotPath = path.resolve(
-        prefixPath,
-        dirPath,
-        suffixPath,
-        baseName
-      );
-      const screenshotDirPath = path.dirname(screenshotPath);
-      if (suffixPath && !seenDirPaths.has(screenshotDirPath)) {
-        // Ensure the directory is clean (delete old screenshots).
-        seenDirPaths.add(screenshotDirPath);
-        await fs.promises.rm(screenshotDirPath, {
-          recursive: true,
-          force: true,
-        });
+                }
+                console.log(
+                  `Capturing: ${path.relative(process.cwd(), screenshotPath)}`
+                );
+                await page.screenshot({
+                  fullPage: true,
+                  path: screenshotPath,
+                });
+              }
+            );
+            let done!: (errorMessage?: string) => void;
+            let errorMessage: string | null = null;
+            const donePromise = new Promise<void>((resolve) => {
+              done = (receivedErrorMessage) => {
+                if (receivedErrorMessage) {
+                  errorMessage = receivedErrorMessage;
+                }
+                resolve();
+              };
+            });
+            await page.exposeFunction("__done__", done);
+            await page.goto(url);
+            return donePromise;
+          }
+        );
+        console.error(pages);
+        await Promise.all(pages);
+      } finally {
+        if (browser) {
+          await browser.close();
+        }
       }
-      await page.screenshot(screenshotPath);
-      return screenshotDirPath;
+      return [...screenshotPaths];
     },
   };
 };

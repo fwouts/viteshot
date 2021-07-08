@@ -51,7 +51,7 @@ const playwright = require("playwright");
 
 module.exports = {
   framework: "${framework}",
-  browser: playwrightShooter(playwright.chromium),
+  shooter: playwrightShooter(playwright.chromium),
 };
 `,
     "utf8"

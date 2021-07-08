@@ -4,7 +4,6 @@ import { fail } from "../helpers/fail";
 import { info } from "../helpers/print";
 import { readConfig } from "../helpers/read-config";
 import { startRenderer } from "../renderer";
-import { shoot } from "../shooter";
 
 const MAIN_BRANCHES = new Set(["main", "master"]);
 
@@ -18,10 +17,12 @@ export async function shootCommand(options: {
     ...config,
     port,
   });
-  const screenshotPaths = await shoot({
-    url: `http://localhost:${port}`,
-    browserConfig: config.browser,
-  });
+  let screenshotPaths: string[];
+  try {
+    screenshotPaths = await config.shooter.shoot(`http://localhost:${port}`);
+  } catch (e) {
+    return fail(e.message);
+  }
   await stopRenderer();
   if (options.push) {
     const git = simpleGit();
