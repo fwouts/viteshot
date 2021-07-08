@@ -38,7 +38,7 @@ viteshot init
 
 ## Usage
 
-All you need is to export one or several UI components from files with the `.screenshot.jsx/tsx/vue/svelte` extension.
+All you need is to export UI components from files with the `.screenshot.jsx/tsx/vue/svelte` extension.
 
 Examples:
 - [Preact](https://github.com/zenclabs/viteshot/blob/main/examples/preact/src/App.screenshot.tsx)
