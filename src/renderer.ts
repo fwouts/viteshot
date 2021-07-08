@@ -85,17 +85,19 @@ export async function startRenderer(options: {
     cwd: options.projectPath,
   });
   const frameworkConfig = frameworkConfiguration[options.framework];
-  const rendererBasePath = path.join(
-    __dirname,
-    "..",
-    "renderers",
-    options.framework
-  );
+  const rendererDirPath = path.join(__dirname, "..", "renderers");
   // Support both production (.js) and development (.ts).
-  const rendererPath = (await fs.pathExists(rendererBasePath + ".js"))
-    ? rendererBasePath + ".js"
-    : rendererBasePath + ".ts";
-  const rendererContent = `${await fs.readFile(rendererPath, "utf8")}
+  const extension = (await fs.pathExists(path.join(rendererDirPath, "main.js")))
+    ? ".js"
+    : ".ts";
+  const mainContent = await fs.readFile(
+    path.join(rendererDirPath, "main" + extension),
+    "utf8"
+  );
+  const rendererContent = `${await fs.readFile(
+    path.join(rendererDirPath, options.framework + extension),
+    "utf8"
+  )}
   ${
     options.wrapper
       ? `import { ${options.wrapper.componentName} as Wrapper } from '/${options.wrapper.path}';`
@@ -125,26 +127,17 @@ export async function startRenderer(options: {
       .join("\n")}
   ];
 
-  if (!window.__takeScreenshot__) {
-    // Debugging.
-    window.__takeScreenshot__ = (name) => {
-      console.log(\`Simulating screenshot: \${name}\`)
-      return new Promise(resolve => setTimeout(resolve, 1000));
-    };
-    window.__done__ = () => {};
-  }
-
-  // Polyfills.
-  window.global = window;
-  window.module = null;
-  window.process = {};
-
-  renderScreenshots(components, Wrapper).then(__done__).catch(console.error);
+  renderScreenshots(components, Wrapper).then(__done__).catch(e => {
+    __done__(e.stack || e.message || "Unknown error");
+  });
   `;
   const viteServer = await vite.createServer({
     root: options.projectPath,
     server: {
       middlewareMode: true,
+      hmr: {
+        overlay: false,
+      },
     },
     optimizeDeps: {
       entries: [
@@ -160,10 +153,13 @@ export async function startRenderer(options: {
       {
         name: "virtual",
         load: async (id) => {
-          if (id !== "/__renderer__.tsx") {
-            return null;
+          if (id === "/__main__.tsx") {
+            return mainContent;
           }
-          return rendererContent;
+          if (id === "/__renderer__.tsx") {
+            return rendererContent;
+          }
+          return null;
         },
       },
       ...(options.vite?.plugins || []),
@@ -191,6 +187,7 @@ export async function startRenderer(options: {
         </style>
         <body>
           <div id="root"></div>
+          <script type="module" src="/__main__.tsx"></script>
           <script type="module" src="/__renderer__.tsx"></script>
         </body>
       </html>    
