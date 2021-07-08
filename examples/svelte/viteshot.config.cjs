@@ -7,4 +7,5 @@ const playwright = require("playwright");
 module.exports = {
   framework: "svelte",
   shooter: playwrightShooter(playwright.firefox),
+  filePathPattern: "**/*.screenshot.svelte",
 };

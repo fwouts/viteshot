@@ -7,4 +7,5 @@ const playwright = require("playwright");
 module.exports = {
   framework: "vue",
   shooter: playwrightShooter(playwright.firefox),
+  filePathPattern: "**/*.screenshot.vue",
 };

@@ -7,6 +7,7 @@ const playwright = require("playwright");
 module.exports = {
   framework: "solid",
   shooter: playwrightShooter(playwright.firefox),
+  filePathPattern: "**/*.screenshot.@(jsx|tsx)",
   wrapper: {
     path: "__reactpreview__/Wrapper",
     componentName: "Wrapper",
