@@ -6,5 +6,5 @@ const playwright = require("playwright");
  */
 module.exports = {
   framework: "svelte",
-  browser: playwrightShooter(playwright.firefox),
+  shooter: playwrightShooter(playwright.firefox),
 };

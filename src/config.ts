@@ -1,11 +1,11 @@
 import * as vite from "vite";
 
-export interface UserConfig<Page extends BasicPage> {
+export interface UserConfig {
   framework: Framework;
   filePathPattern: string;
   projectPath: string;
   wrapper?: WrapperConfig;
-  browser: BrowserConfig<Page>;
+  shooter: Shooter;
   vite?: vite.UserConfig;
 }
 
@@ -13,12 +13,8 @@ export interface WrapperConfig {
   path: string;
   componentName: string;
 }
-export interface BrowserConfig<Page extends BasicPage> {
-  launchBrowser(): Promise<{
-    newPage(): Promise<Page>;
-    close(): Promise<void>;
-  }>;
-  captureScreenshot(page: Page, name: string): Promise<string | null>;
+export interface Shooter {
+  shoot(url: string): Promise<string[]>;
 }
 
 export const DEFAULT_CONFIG = {
@@ -26,8 +22,3 @@ export const DEFAULT_CONFIG = {
 } as const;
 
 export type Framework = "preact" | "react" | "solid" | "svelte" | "vue";
-
-export interface BasicPage {
-  exposeFunction(name: string, f: Function): Promise<void>;
-  goto(url: string): Promise<unknown>;
-}

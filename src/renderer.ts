@@ -175,16 +175,19 @@ export async function startRenderer(options: {
       `
       <!DOCTYPE html>
       <html>
-        <style>
-        * {
-          transition: none !important;
-          animation: none !important;
-        }
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <style>
+          * {
+            transition: none !important;
+            animation: none !important;
+          }
 
-        .viteshot-error {
-          color: #e00;
-        }
-        </style>
+          .viteshot-error {
+            color: #e00;
+          }
+          </style>
+        </head>
         <body>
           <div id="root"></div>
           <script type="module" src="/__main__.tsx"></script>

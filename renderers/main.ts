@@ -25,13 +25,9 @@ if (!window.__takeScreenshot__) {
 }
 
 // Useful polyfills.
-
-// @ts-ignore
-window.global = window;
-// @ts-ignore
-window.module = null;
-// @ts-ignore
-window.process = {};
+const w = window as any;
+w.global ||= window;
+w.process ||= {};
 
 // Catch runtime errors and stop immediately.
 window.onerror = (event, source, lineno, colno, error) => {

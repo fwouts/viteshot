@@ -1,14 +1,14 @@
 import fs from "fs-extra";
 import path from "path";
-import { BasicPage, DEFAULT_CONFIG, UserConfig } from "../config";
+import { DEFAULT_CONFIG, UserConfig } from "../config";
 import { fail } from "./fail";
 import { findFileUpwards } from "./find-file";
 
 const CONFIG_FILE_NAMES = ["viteshot.config.js", "viteshot.config.cjs"];
 
-export async function readConfig<Page extends BasicPage>(
+export async function readConfig(
   customConfigFilePath?: string
-): Promise<UserConfig<Page>> {
+): Promise<UserConfig> {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
     : await findFileUpwards(...CONFIG_FILE_NAMES);
@@ -25,17 +25,17 @@ export async function readConfig<Page extends BasicPage>(
   } catch {
     return fail(`Unable to access config file: ${configFilePath}`);
   }
-  const config = require(configFilePath) as Partial<UserConfig<any>>;
+  const config = require(configFilePath) as Partial<UserConfig>;
   const configFileName = path.basename(configFilePath);
   if (!config.framework) {
     throw new Error(`Please specify \`framework\` in ${configFileName}`);
   }
-  if (!config.browser) {
-    throw new Error(`Please specify \`browser\` in ${configFileName}`);
+  if (!config.shooter) {
+    throw new Error(`Please specify \`shooter\` in ${configFileName}`);
   }
   return {
     framework: config.framework,
-    browser: config.browser,
+    shooter: config.shooter,
     projectPath: config.projectPath || path.dirname(configFilePath),
     filePathPattern: config.filePathPattern || DEFAULT_CONFIG.filePathPattern,
     vite: config.vite,
