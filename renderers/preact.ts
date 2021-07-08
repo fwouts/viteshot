@@ -14,14 +14,19 @@ export async function renderScreenshots(
   Wrapper ||= Preact.Fragment;
   const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
+    if (typeof Component !== "function") {
+      // This is not a component.
+      continue;
+    }
     root.innerHTML = "";
     try {
       Preact.render(
         Preact.createElement(Wrapper, {}, Preact.createElement(Component, {})),
         root
       );
-      if (Component.beforeScreenshot) {
-        await Component.beforeScreenshot(root);
+      const beforeScreenshot = (Component as any).beforeScreenshot;
+      if (beforeScreenshot) {
+        await beforeScreenshot(root);
       }
     } catch (e) {
       root.innerHTML = `<pre class="viteshot-error">${e.stack || e}</pre>`;

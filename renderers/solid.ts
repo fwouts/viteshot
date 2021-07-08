@@ -15,6 +15,10 @@ export async function renderScreenshots(
   Wrapper ||= (props) => props.children;
   const root = document.getElementById("root")!;
   for (const [name, Component] of components) {
+    if (typeof Component !== "function") {
+      // This is not a component.
+      continue;
+    }
     root.innerHTML = "";
     let detach: () => void = () => {};
     try {
@@ -25,8 +29,9 @@ export async function renderScreenshots(
           }),
         root
       );
-      if (Component.beforeScreenshot) {
-        await Component.beforeScreenshot(root);
+      const beforeScreenshot = (Component as any).beforeScreenshot;
+      if (beforeScreenshot) {
+        await beforeScreenshot(root);
       }
     } catch (e) {
       root.innerHTML = `<pre class="viteshot-error">${e}\n${e.stack}</pre>`;
