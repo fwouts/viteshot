@@ -1,7 +1,7 @@
 <script lang="ts">
   import Counter from "./Counter.svelte";
 
-  export let title: string;
+  let title: string;
 
   export function beforeScreenshot(element: HTMLElement) {
     element.querySelector("button")!.click();
