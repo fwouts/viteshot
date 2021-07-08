@@ -148,6 +148,7 @@ export async function startRenderer(options: {
     },
     ...options.vite,
     plugins: [
+      ...(options.vite?.plugins || []),
       ...frameworkConfig.plugins,
       tsconfigPaths(),
       {
@@ -162,7 +163,6 @@ export async function startRenderer(options: {
           return null;
         },
       },
-      ...(options.vite?.plugins || []),
     ],
   });
   const app = connect();
