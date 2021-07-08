@@ -140,6 +140,9 @@ export async function startRenderer(options: {
     server: {
       middlewareMode: true,
     },
+    optimizeDeps: {
+      entries: relativeFilePaths,
+    },
     ...options.vite,
     plugins: [
       ...frameworkConfig.plugins,
