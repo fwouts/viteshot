@@ -1,4 +1,5 @@
 import { BasicPage, BrowserConfig } from "./config";
+import { fail } from "./helpers/fail";
 
 export async function shoot<Page extends BasicPage>({
   url,
@@ -9,9 +10,15 @@ export async function shoot<Page extends BasicPage>({
 }) {
   const browser = await browserConfig.launchBrowser();
   const page = await browser.newPage();
-  let resolveDone!: () => void;
+  let done!: (errorMessage?: string) => void;
+  let errorMessage: string | null = null;
   const donePromise = new Promise<void>((resolve) => {
-    resolveDone = resolve;
+    done = (receivedErrorMessage) => {
+      if (receivedErrorMessage) {
+        errorMessage = receivedErrorMessage;
+      }
+      resolve();
+    };
   });
   const screenshotPaths: string[] = [];
   await page.exposeFunction("__takeScreenshot__", async (name: string) => {
@@ -20,9 +27,12 @@ export async function shoot<Page extends BasicPage>({
       screenshotPaths.push(screenshotPath);
     }
   });
-  await page.exposeFunction("__done__", resolveDone);
+  await page.exposeFunction("__done__", done);
   await page.goto(url);
   await donePromise;
   await browser.close();
+  if (errorMessage) {
+    return fail(errorMessage);
+  }
   return screenshotPaths;
 }
