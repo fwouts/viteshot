@@ -128,6 +128,11 @@ export async function startRenderer(options: {
     window.__done__ = () => {};
   }
 
+  // Polyfills.
+  window.global = window;
+  window.module = null;
+  window.process = {};
+
   renderScreenshots(components, Wrapper).then(__done__).catch(console.error);
   `;
   const viteServer = await vite.createServer({
