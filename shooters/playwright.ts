@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import playwright from "playwright";
 import { BrowserConfig } from "../src/config";
@@ -13,9 +14,27 @@ export default (
       suffixPath?: string;
     };
   } = {}
-): BrowserConfig<playwright.Page> =>
-  ({
+): BrowserConfig<playwright.Page> => {
+  let prefixPath: string;
+  let suffixPath: string;
+  if (options.output) {
+    prefixPath = options.output.prefixPath || "";
+    suffixPath = options.output.suffixPath || "";
+  } else {
+    prefixPath = "";
+    suffixPath = `__screenshots__/${process.platform}`;
+  }
+  const seenDirPaths = new Set<string>();
+  return {
     launchBrowser: async () => {
+      // Delete all old screenshots if they live in a top-level directory.
+      if (prefixPath) {
+        await fs.promises.rm(prefixPath, {
+          recursive: true,
+          force: true,
+        });
+      }
+      // Start the browser.
       const browser = await browserType.launch();
       const context = await browser.newContext(options.context);
       return {
@@ -29,15 +48,6 @@ export default (
       };
     },
     captureScreenshot: async (page: playwright.Page, name: string) => {
-      let prefixPath: string;
-      let suffixPath: string;
-      if (options.output) {
-        prefixPath = options.output.prefixPath || "";
-        suffixPath = options.output.suffixPath || "";
-      } else {
-        prefixPath = "";
-        suffixPath = `__screenshots__/${process.platform}`;
-      }
       const dirPath = path.dirname(name);
       const baseName = path.basename(name);
       const screenshotPath = path.resolve(
@@ -46,11 +56,21 @@ export default (
         suffixPath,
         `${baseName}.png`
       );
+      const screenshotDirPath = path.dirname(screenshotPath);
+      if (suffixPath && !seenDirPaths.has(screenshotDirPath)) {
+        // Ensure the directory is clean (delete old screenshots).
+        seenDirPaths.add(screenshotDirPath);
+        await fs.promises.rm(screenshotDirPath, {
+          recursive: true,
+          force: true,
+        });
+      }
       console.log(`Capturing: ${name}`);
       await page.screenshot({
         fullPage: true,
         path: screenshotPath,
       });
-      return screenshotPath;
+      return screenshotDirPath;
     },
-  } as const);
+  };
+};
