@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./logo.png" alt="logo" width="200" />
+  <img src="https://raw.githubusercontent.com/zenclabs/viteshot/main/logo.png" alt="logo" width="200" />
 </p>
 <br/>
 <p align="center">
