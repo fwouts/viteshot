@@ -1,6 +1,5 @@
 import fs from "fs-extra";
 import path from "path";
-import * as vite from "vite";
 import { UserConfig } from "../config";
 import { fail } from "./fail";
 import { findFileUpwards } from "./find-file";
@@ -37,17 +36,12 @@ export async function readConfig(
   if (!config.filePathPattern) {
     return fail(`Please specify \`filePathPattern\` in ${configFileName}`);
   }
-  const projectPath = config.projectPath || path.dirname(configFilePath);
-  const loadedViteConfig = await vite.loadConfigFromFile({
-    command: "build",
-    mode: "development",
-  });
   return {
     framework: config.framework,
     shooter: config.shooter,
-    projectPath,
+    projectPath: config.projectPath || path.dirname(configFilePath),
     filePathPattern: config.filePathPattern,
-    vite: config.vite || (loadedViteConfig ? loadedViteConfig.config : {}),
+    vite: config.vite,
     wrapper: config.wrapper,
   };
 }
