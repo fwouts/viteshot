@@ -38,6 +38,7 @@ export async function readConfig(
     return fail(`Please specify \`filePathPattern\` in ${configFileName}`);
   }
   const projectPath = config.projectPath || path.dirname(configFilePath);
+  process.chdir(projectPath);
   const loadedViteConfig = await vite.loadConfigFromFile({
     command: "build",
     mode: "development",
