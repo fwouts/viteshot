@@ -17,6 +17,7 @@ module.exports = {
       pixel2: playwright.devices["Pixel 2"],
     },
   }),
+  filePathPattern: "**/*.screenshot.@(jsx|tsx)",
   wrapper: {
     path: "__reactpreview__/Wrapper",
     componentName: "Wrapper",

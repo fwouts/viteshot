@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import path from "path";
 import * as vite from "vite";
-import { DEFAULT_CONFIG, UserConfig } from "../config";
+import { UserConfig } from "../config";
 import { fail } from "./fail";
 import { findFileUpwards } from "./find-file";
 
@@ -29,10 +29,13 @@ export async function readConfig(
   const config = require(configFilePath) as Partial<UserConfig>;
   const configFileName = path.basename(configFilePath);
   if (!config.framework) {
-    throw new Error(`Please specify \`framework\` in ${configFileName}`);
+    return fail(`Please specify \`framework\` in ${configFileName}`);
   }
   if (!config.shooter) {
-    throw new Error(`Please specify \`shooter\` in ${configFileName}`);
+    return fail(`Please specify \`shooter\` in ${configFileName}`);
+  }
+  if (!config.filePathPattern) {
+    return fail(`Please specify \`filePathPattern\` in ${configFileName}`);
   }
   const projectPath = config.projectPath || path.dirname(configFilePath);
   const loadedViteConfig = await vite.loadConfigFromFile({
@@ -43,7 +46,7 @@ export async function readConfig(
     framework: config.framework,
     shooter: config.shooter,
     projectPath,
-    filePathPattern: config.filePathPattern || DEFAULT_CONFIG.filePathPattern,
+    filePathPattern: config.filePathPattern,
     vite: config.vite || (loadedViteConfig ? loadedViteConfig.config : {}),
     wrapper: config.wrapper,
   };

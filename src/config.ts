@@ -17,8 +17,4 @@ export interface Shooter {
   shoot(url: string): Promise<string[]>;
 }
 
-export const DEFAULT_CONFIG = {
-  filePathPattern: "**/*.screenshot.@(jsx|tsx|vue|svelte)",
-} as const;
-
 export type Framework = "preact" | "react" | "solid" | "svelte" | "vue";
