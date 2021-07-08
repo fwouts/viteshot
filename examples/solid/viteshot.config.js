@@ -12,4 +12,6 @@ module.exports = {
     path: "__reactpreview__/Wrapper",
     componentName: "Wrapper",
   },
+  // For unknown reasons, the default Vite config crashes in CI.
+  vite: {},
 };
