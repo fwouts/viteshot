@@ -4,7 +4,7 @@
 <br/>
 <p align="center">
   <a href="https://circleci.com/gh/zenclabs/viteshot/tree/master">
-    <img src="https://github.com/zenclabs/viteshot/actions/workflows/screenshot/badge.svg" alt="GitHub Actions" />
+    <img src="https://github.com/zenclabs/viteshot/actions/workflows/screenshot.yml/badge.svg" alt="GitHub Actions" />
   </a>
   <a href="https://www.npmjs.com/package/viteshot">
     <img src="https://badge.fury.io/js/viteshot.svg" alt="npm" />
