@@ -1,20 +1,24 @@
 import fs from "fs";
 import path from "path";
 import playwright from "playwright";
-import { BrowserConfig } from "../src/config";
+import { BasicPage, BrowserConfig } from "../src/config";
 
 const DEFAULT_TIMEOUT_MILLIS = 2 * 60 * 1000;
+
+interface PlaywrightMetaPage extends BasicPage {
+  screenshot(page: string): Promise<void>;
+}
 
 export default (
   browserType: playwright.BrowserType<{}>,
   options: {
-    context?: playwright.BrowserContextOptions;
+    contexts?: Record<string, playwright.BrowserContextOptions>;
     output?: {
       prefixPath?: string;
       suffixPath?: string;
     };
   } = {}
-): BrowserConfig<playwright.Page> => {
+): BrowserConfig<PlaywrightMetaPage> => {
   let prefixPath: string;
   let suffixPath: string;
   if (options.output) {
@@ -36,25 +40,69 @@ export default (
       }
       // Start the browser.
       const browser = await browserType.launch();
-      const context = await browser.newContext(options.context);
+      const contexts = await Promise.all(
+        Object.entries(options.contexts || { "": {} }).map(
+          async ([name, contextOptions]) => ({
+            name,
+            context: await browser.newContext(contextOptions),
+          })
+        )
+      );
       return {
         newPage: async () => {
-          const page = await context.newPage();
-          page.setDefaultTimeout(DEFAULT_TIMEOUT_MILLIS);
-          page.on("pageerror", ({ message }) => console.error(message));
-          return page;
+          const pages: Record<string, playwright.Page> = {};
+          for (const { name, context } of contexts) {
+            const page = await context.newPage();
+            page.setDefaultTimeout(DEFAULT_TIMEOUT_MILLIS);
+            page.on("pageerror", ({ message }) => console.error(message));
+            pages[name] = page;
+          }
+          return {
+            exposeFunction: async (functionName, f) => {
+              await Promise.all(
+                Object.values(pages).map((page) =>
+                  page.exposeFunction(functionName, f)
+                )
+              );
+            },
+            goto: async (url) => {
+              await Promise.all(
+                Object.values(pages).map((page) => page.goto(url))
+              );
+            },
+            screenshot: async (screenshotPath: string) => {
+              const dirPath = path.dirname(screenshotPath);
+              const baseName = path.basename(screenshotPath);
+              await Promise.all(
+                Object.entries(pages).map(([contextName, page]) => {
+                  const filePath = path.join(
+                    dirPath,
+                    contextName,
+                    `${baseName}.png`
+                  );
+                  console.log(
+                    `Capturing: ${path.relative(process.cwd(), filePath)}`
+                  );
+                  return page.screenshot({
+                    fullPage: true,
+                    path: filePath,
+                  });
+                })
+              );
+            },
+          };
         },
         close: () => browser.close(),
       };
     },
-    captureScreenshot: async (page: playwright.Page, name: string) => {
+    captureScreenshot: async (page: PlaywrightMetaPage, name: string) => {
       const dirPath = path.dirname(name);
       const baseName = path.basename(name);
       const screenshotPath = path.resolve(
         prefixPath,
         dirPath,
         suffixPath,
-        `${baseName}.png`
+        baseName
       );
       const screenshotDirPath = path.dirname(screenshotPath);
       if (suffixPath && !seenDirPaths.has(screenshotDirPath)) {
@@ -65,11 +113,7 @@ export default (
           force: true,
         });
       }
-      console.log(`Capturing: ${name}`);
-      await page.screenshot({
-        fullPage: true,
-        path: screenshotPath,
-      });
+      await page.screenshot(screenshotPath);
       return screenshotDirPath;
     },
   };

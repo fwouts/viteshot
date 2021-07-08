@@ -7,7 +7,15 @@ const playwright = require("playwright");
 module.exports = {
   framework: "react",
   browser: playwrightShooter(playwright.chromium, {
-    context: playwright.devices["Pixel 2"],
+    contexts: {
+      laptop: {
+        viewport: {
+          width: 1366,
+          height: 768,
+        },
+      },
+      pixel2: playwright.devices["Pixel 2"],
+    },
   }),
   wrapper: {
     path: "__reactpreview__/Wrapper",
