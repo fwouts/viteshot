@@ -49,10 +49,10 @@ export default (
     },
     captureScreenshot: async (page: playwright.Page, name: string) => {
       const dirPath = path.dirname(name);
-      if (!seenDirPaths.has(dirPath)) {
+      if (!prefixPath && suffixPath && !seenDirPaths.has(dirPath)) {
         // Ensure the directory is clean (delete old screenshots).
         seenDirPaths.add(dirPath);
-        await fs.promises.rm(dirPath, {
+        await fs.promises.rm(path.join(prefixPath, dirPath, suffixPath), {
           recursive: true,
           force: true,
         });
