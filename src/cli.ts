@@ -35,11 +35,17 @@ yargs(hideBin(process.argv))
     ["debug"],
     "starts the component server for debugging purposes",
     (yargs) => {
-      return yargs.option("config", {
-        alias: "c",
-        describe: "Path of a config file",
-        type: "string",
-      });
+      return yargs
+        .option("config", {
+          alias: "c",
+          describe: "Path of a config file",
+          type: "string",
+        })
+        .option("port", {
+          alias: "p",
+          describe: "Port on which to run the server",
+          type: "number",
+        });
     },
     async (args) => {
       await debugCommand(args);
