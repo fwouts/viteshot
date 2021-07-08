@@ -49,14 +49,6 @@ export default (
     },
     captureScreenshot: async (page: playwright.Page, name: string) => {
       const dirPath = path.dirname(name);
-      if (!prefixPath && suffixPath && !seenDirPaths.has(dirPath)) {
-        // Ensure the directory is clean (delete old screenshots).
-        seenDirPaths.add(dirPath);
-        await fs.promises.rm(path.join(prefixPath, dirPath, suffixPath), {
-          recursive: true,
-          force: true,
-        });
-      }
       const baseName = path.basename(name);
       const screenshotPath = path.resolve(
         prefixPath,
@@ -64,6 +56,15 @@ export default (
         suffixPath,
         `${baseName}.png`
       );
+      const screenshotDirPath = path.dirname(screenshotPath);
+      if (suffixPath && !seenDirPaths.has(screenshotDirPath)) {
+        // Ensure the directory is clean (delete old screenshots).
+        seenDirPaths.add(screenshotDirPath);
+        await fs.promises.rm(screenshotDirPath, {
+          recursive: true,
+          force: true,
+        });
+      }
       console.log(`Capturing: ${name}`);
       await page.screenshot({
         fullPage: true,
