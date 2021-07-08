@@ -150,8 +150,6 @@ export interface WrapperConfig {
 }
 ```
 
-If you already use Vite in your project, your configuration will be picked up automatically unless you explicitly set the `vite` configuration option.
-
 ## License
 
 MIT
