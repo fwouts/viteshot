@@ -140,11 +140,6 @@ module.exports = {
    */
   vite: vite.UserConfig;
 }
-
-export interface WrapperConfig {
-  path: string;
-  componentName: string;
-}
 ```
 
 ## License
