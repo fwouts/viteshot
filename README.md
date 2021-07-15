@@ -39,7 +39,7 @@ All you need is to export UI components from files with the `.screenshot.jsx/tsx
 
 Examples:
 - [Preact](https://github.com/zenclabs/viteshot/blob/main/examples/preact/src/App.screenshot.tsx)
-- [React](https://github.com/zenclabs/viteshot/blob/main/examples/react/src/App.screenshot.tsx)
+- [React](https://github.com/zenclabs/viteshot/blob/main/examples/react-tsx/src/App.screenshot.tsx)
 - [Solid](https://github.com/zenclabs/viteshot/blob/main/examples/solid/src/App.screenshot.tsx)
 - [Svelte](https://github.com/zenclabs/viteshot/blob/main/examples/svelte/src/lib/Counter.screenshot.svelte)
 - [Vue](https://github.com/zenclabs/viteshot/blob/main/examples/vue/src/components/HelloWorld.screenshot.vue)

@@ -40,7 +40,13 @@ jobs:
           yarn viteshot -p
           yarn rimraf node_modules/viteshot
       - run: |
-          cd examples/react
+          cd examples/react-js
+          yarn --frozen-lockfile
+          npm link viteshot
+          yarn viteshot -p
+          yarn rimraf node_modules/viteshot
+      - run: |
+          cd examples/react-tsx
           yarn --frozen-lockfile
           npm link viteshot
           yarn viteshot -p
