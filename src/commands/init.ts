@@ -52,7 +52,7 @@ const playwright = require("playwright");
 module.exports = {
   framework: "${framework}",
   shooter: playwrightShooter(playwright.chromium),
-  filePathPattern: "**/*.screenshot.@(jsx|tsx|vue|svelte)",
+  filePathPattern: "**/*.screenshot.@(js|jsx|tsx|vue|svelte)",
 };
 `,
     "utf8"

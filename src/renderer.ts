@@ -1,4 +1,5 @@
 import connect from "connect";
+import * as esbuild from "esbuild";
 import fs from "fs-extra";
 import glob from "glob";
 import { Server } from "http";
@@ -140,6 +141,21 @@ export async function startRenderer(options: {
       },
     },
     optimizeDeps: {
+      esbuildOptions: {
+        plugins: [
+          // Ensure that esbuild doesn't crash when encountering JSX in .js files.
+          // Credit: https://github.com/vitejs/vite/discussions/3448#discussioncomment-749919
+          {
+            name: "load-js-files-as-jsx",
+            setup(build) {
+              build.onLoad({ filter: /.*\.js$/ }, async (args) => ({
+                loader: "jsx",
+                contents: await fs.readFile(args.path, "utf8"),
+              }));
+            },
+          },
+        ],
+      },
       entries: [
         ...(options.wrapper ? [options.wrapper.path] : []),
         ...relativeFilePaths,
@@ -158,6 +174,24 @@ export async function startRenderer(options: {
           }
           if (id === "/__renderer__.tsx") {
             return rendererContent;
+          }
+          if (id.endsWith(".js")) {
+            const source = await fs.readFile(id, "utf8");
+            const transformed = await esbuild.transform(source, {
+              loader: "jsx",
+              format: "esm",
+              sourcefile: id,
+            });
+            // Since React 17, importing React is optional when building with webpack.
+            // We do need the import with Vite, however.
+            const reactImportRegExp = /import (\* as )?React[ ,]/;
+            if (
+              transformed.code.includes("React.") &&
+              !reactImportRegExp.test(transformed.code)
+            ) {
+              transformed.code = `import React from "react";${transformed.code}`;
+            }
+            return transformed;
           }
           return null;
         },
