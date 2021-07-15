@@ -1,4 +1,5 @@
 import connect from "connect";
+import esbuild from "esbuild";
 import fs from "fs-extra";
 import glob from "glob";
 import { Server } from "http";
@@ -158,6 +159,18 @@ export async function startRenderer(options: {
           }
           if (id === "/__renderer__.tsx") {
             return rendererContent;
+          }
+          if (id.endsWith(".js")) {
+            const reactImportRegExp = /import React[ ,]/;
+            let source = await fs.readFile(id, "utf8");
+            if (!reactImportRegExp.test(source)) {
+              source = `import React from "react";${source}`;
+            }
+            return esbuild.transform(source, {
+              loader: "jsx",
+              format: "esm",
+              sourcefile: id,
+            });
           }
           return null;
         },
