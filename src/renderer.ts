@@ -196,7 +196,8 @@ export async function startRenderer(options: {
       </html>    
       `
     );
-    res.setHeader("Content-Type", "text/html").end(html);
+    res.setHeader("Content-Type", "text/html");
+    res.end(html);
   });
   app.use(viteServer.middlewares);
   let server!: Server;
