@@ -4,6 +4,7 @@ import fs from "fs-extra";
 import glob from "glob";
 import { Server } from "http";
 import path from "path";
+import friendlyTypeImports from "rollup-plugin-friendly-type-imports";
 import { promisify } from "util";
 import * as vite from "vite";
 import { UserConfig } from "vite";
@@ -166,6 +167,7 @@ export async function startRenderer(options: {
     plugins: [
       ...frameworkConfig.plugins,
       tsconfigPaths(),
+      friendlyTypeImports(),
       {
         name: "virtual",
         load: async (id) => {
