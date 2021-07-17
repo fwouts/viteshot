@@ -27,7 +27,9 @@ if (!window.__takeScreenshot__) {
 // Useful polyfills.
 const w = window as any;
 w.global ||= window;
-w.process ||= {};
+w.process ||= {
+  env: {},
+};
 
 // Catch runtime errors and stop immediately.
 window.onerror = (event, source, lineno, colno, error) => {
