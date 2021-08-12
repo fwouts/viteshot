@@ -1,3 +1,4 @@
+import commonjs from "@rollup/plugin-commonjs";
 import fs from "fs";
 import path from "path";
 import { preserveShebangs } from "rollup-plugin-preserve-shebangs";
@@ -18,7 +19,15 @@ export default [
     preserveModules: true,
     input: ["src/cli.ts"],
     output: [{ dir: "dist/lib", format: "cjs" }],
-    plugins: [typescriptPlugin, preserveShebangs()],
+    plugins: [
+      typescriptPlugin,
+      preserveShebangs(),
+      commonjs({
+        namedExports: {
+          "@svgr/core": ["default"],
+        },
+      }),
+    ],
   },
   {
     preserveModules: true,

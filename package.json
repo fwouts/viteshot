@@ -30,6 +30,7 @@
   "devDependencies": {
     "@percy/cli": "^1.0.0-beta.58",
     "@percy/puppeteer": "^2.0.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
     "@types/connect": "^3.4.34",
     "@types/fs-extra": "^9.0.11",
     "@types/glob": "^7.1.3",
