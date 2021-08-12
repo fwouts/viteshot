@@ -9,6 +9,7 @@ export function svgrPlugin(
   alias: Record<string, string>,
   componentName?: string
 ): vite.Plugin {
+  componentName = componentName || "ReactComponent";
   return {
     name: "vite:svgr",
     async transform(code, id) {
@@ -37,7 +38,7 @@ export function svgrPlugin(
         `export { ReactComponent as ${componentName} }`
       );
       const res = await esbuild.transform(
-        (componentName !== "default" ? code : "") + componentCode,
+        (componentName !== "default" ? code : "") + "\n" + componentCode,
         {
           loader: "jsx",
         }
