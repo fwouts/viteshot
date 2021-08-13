@@ -1,5 +1,5 @@
 // @ts-ignore untyped (pending https://github.com/gregberge/svgr/pull/555)
-import * as svgr from "@svgr/core";
+import svgr from "@svgr/core";
 import * as esbuild from "esbuild";
 import fs from "fs-extra";
 import path from "path";

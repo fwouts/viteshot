@@ -45,7 +45,10 @@ export async function startRenderer(options: {
         throw new Error(`Invalid framework type: ${frameworkType}`);
     }
   })();
-  const rendererDirPath = path.join(__dirname, "..", "renderers");
+  const rendererDirPath = path.join(
+    __dirname,
+    process.env["RENDERER_DIR_PATH"] || "../renderers"
+  );
   // Support both production (.js) and development (.ts).
   const extension = (await fs.pathExists(path.join(rendererDirPath, "main.js")))
     ? ".js"
