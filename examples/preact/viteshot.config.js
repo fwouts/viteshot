@@ -5,7 +5,9 @@ const playwright = require("playwright");
  * @type {import('viteshot').UserConfig}
  */
 module.exports = {
-  framework: "preact",
+  framework: {
+    type: "preact",
+  },
   shooter: playwrightShooter(playwright.chromium, {
     contexts: {
       laptop: {

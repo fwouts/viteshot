@@ -93,7 +93,9 @@ module.exports = {
   /**
    * Configure the framework used by your project.
    */
-  framework: "preact" | "react" | "solid" | "svelte" | "vue",
+  framework: {
+    type: "preact" | "react" | "solid" | "svelte" | "vue"
+  },
 
   /**
    * Configure your screenshot file paths.

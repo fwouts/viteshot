@@ -1,5 +1,7 @@
+import commonjs from "@rollup/plugin-commonjs";
 import fs from "fs";
 import path from "path";
+import injectProcessEnv from "rollup-plugin-inject-process-env";
 import { preserveShebangs } from "rollup-plugin-preserve-shebangs";
 import typescript from "rollup-plugin-typescript2";
 
@@ -18,7 +20,18 @@ export default [
     preserveModules: true,
     input: ["src/cli.ts"],
     output: [{ dir: "dist/lib", format: "cjs" }],
-    plugins: [typescriptPlugin, preserveShebangs()],
+    plugins: [
+      typescriptPlugin,
+      preserveShebangs(),
+      commonjs({
+        namedExports: {
+          "@svgr/core": ["default"],
+        },
+      }),
+      injectProcessEnv({
+        RENDERER_DIR_PATH: "../../renderers",
+      }),
+    ],
   },
   {
     preserveModules: true,

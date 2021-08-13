@@ -5,7 +5,9 @@ const playwright = require("playwright");
  * @type {import('viteshot').UserConfig}
  */
 module.exports = {
-  framework: "svelte",
+  framework: {
+    type: "svelte",
+  },
   shooter: playwrightShooter(playwright.firefox),
   filePathPattern: "**/*.screenshot.svelte",
 };

@@ -5,7 +5,9 @@ const playwright = require("playwright");
  * @type {import('viteshot').UserConfig}
  */
 module.exports = {
-  framework: "vue",
+  framework: {
+    type: "vue",
+  },
   shooter: playwrightShooter(playwright.firefox),
   filePathPattern: "**/*.screenshot.vue",
 };

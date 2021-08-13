@@ -5,7 +5,9 @@ const playwright = require("playwright");
  * @type {import('viteshot').UserConfig}
  */
 module.exports = {
-  framework: "solid",
+  framework: {
+    type: "solid",
+  },
   shooter: playwrightShooter(playwright.firefox),
   filePathPattern: "**/*.screenshot.@(jsx|tsx)",
   wrapper: {

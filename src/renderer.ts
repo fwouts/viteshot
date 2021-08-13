@@ -7,87 +7,48 @@ import path from "path";
 import friendlyTypeImports from "rollup-plugin-friendly-type-imports";
 import { promisify } from "util";
 import * as vite from "vite";
-import { UserConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { Framework, WrapperConfig } from "./config";
-
-const frameworkConfiguration = {
-  preact: {
-    packages: ["preact"],
-    defaultImports: false,
-    plugins: [
-      {
-        name: "preact",
-        config() {
-          return {
-            esbuild: {
-              jsxFactory: "h",
-              jsxFragment: "Fragment",
-            },
-            resolve: {
-              alias: {
-                "react-dom": "preact/compat",
-                react: "preact/compat",
-              },
-            },
-          };
-        },
-        transform(code: string, id: string) {
-          if (id.endsWith("sx") && !code.includes(`from "preact"`)) {
-            return `import { h } from 'preact';\n${code}`;
-          }
-          return null;
-        },
-      },
-    ],
-  },
-  react: {
-    packages: ["react", "react-dom"],
-    defaultImports: false,
-    plugins: [
-      {
-        name: "react",
-        transform(code: string, id: string) {
-          if (id.endsWith("sx") && !code.includes(`import React`)) {
-            return `import React from 'react';\n${code}`;
-          }
-          return null;
-        },
-      },
-    ],
-  },
-  solid: {
-    packages: ["solid-js"],
-    defaultImports: false,
-    plugins: [],
-  },
-  svelte: {
-    packages: ["svelte"],
-    defaultImports: true,
-    plugins: [],
-  },
-  vue: {
-    packages: ["vue"],
-    defaultImports: true,
-    plugins: [],
-  },
-} as const;
+import { FrameworkOptions, WrapperConfig } from "./config";
+import { preactConfiguration } from "./frameworks/preact";
+import { reactConfiguration } from "./frameworks/react";
+import { solidConfiguration } from "./frameworks/solid";
+import { svelteConfiguration } from "./frameworks/svelte";
+import { vueConfiguration } from "./frameworks/vue";
 
 export async function startRenderer(options: {
-  framework: Framework;
+  framework: FrameworkOptions;
   projectPath: string;
   filePathPattern: string;
   port: number;
   wrapper?: WrapperConfig;
-  vite?: UserConfig;
+  vite?: vite.UserConfig;
 }) {
   process.chdir(options.projectPath);
   const relativeFilePaths = await promisify(glob)(options.filePathPattern, {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
   });
-  const frameworkConfig = frameworkConfiguration[options.framework];
-  const rendererDirPath = path.join(__dirname, "..", "renderers");
+  const frameworkConfig = (() => {
+    const frameworkType = options.framework.type;
+    switch (options.framework.type) {
+      case "preact":
+        return preactConfiguration();
+      case "react":
+        return reactConfiguration(options.framework);
+      case "solid":
+        return solidConfiguration();
+      case "svelte":
+        return svelteConfiguration();
+      case "vue":
+        return vueConfiguration();
+      default:
+        throw new Error(`Invalid framework type: ${frameworkType}`);
+    }
+  })();
+  const rendererDirPath = path.join(
+    __dirname,
+    process.env["RENDERER_DIR_PATH"] || "../renderers"
+  );
   // Support both production (.js) and development (.ts).
   const extension = (await fs.pathExists(path.join(rendererDirPath, "main.js")))
     ? ".js"
@@ -97,7 +58,7 @@ export async function startRenderer(options: {
     "utf8"
   );
   const rendererContent = `${await fs.readFile(
-    path.join(rendererDirPath, options.framework + extension),
+    path.join(rendererDirPath, options.framework.type + extension),
     "utf8"
   )}
   ${

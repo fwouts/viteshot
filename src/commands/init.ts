@@ -50,7 +50,9 @@ export async function initCommand(): Promise<void> {
 const playwright = require("playwright");
 
 module.exports = {
-  framework: "${framework}",
+  framework: {
+    type: "${framework}",
+  },
   shooter: playwrightShooter(playwright.chromium),
   filePathPattern: "**/*.screenshot.@(js|jsx|tsx|vue|svelte)",
 };
