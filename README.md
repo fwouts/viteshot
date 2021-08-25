@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zenclabs/viteshot/main/logo.png" alt="logo" width="200" />
+  <img src="https://raw.githubusercontent.com/zenclabs/viteshot/main/docs/static/img/logo.png" alt="logo" width="200" />
 </p>
 <br/>
 <p align="center">
@@ -35,6 +35,7 @@ viteshot init
 All you need is to export UI components from files with the `.screenshot.jsx/tsx/vue/svelte` extension.
 
 Examples:
+
 - [Preact](https://github.com/zenclabs/viteshot/blob/main/examples/preact/src/App.screenshot.tsx)
 - [React](https://github.com/zenclabs/viteshot/blob/main/examples/react-tsx/src/App.screenshot.tsx)
 - [Solid](https://github.com/zenclabs/viteshot/blob/main/examples/solid/src/App.screenshot.tsx)
@@ -42,6 +43,7 @@ Examples:
 - [Vue](https://github.com/zenclabs/viteshot/blob/main/examples/vue/src/components/HelloWorld.screenshot.vue)
 
 Then, generate screenshots with:
+
 ```sh
 # Take screenshots.
 viteshot
@@ -59,6 +61,7 @@ viteshot
 ## Managing screenshots
 
 You can manage screenshots in several possible ways:
+
 1. Store screenshots into your Git repository (ideally using Git LFS).
 2. Upload your screenshots to the cloud (e.g. using [`reg-suit`](https://github.com/reg-viz/reg-suit)).
 3. Use a third-party service (e.g. [Percy](https://percy.io)).
@@ -85,6 +88,7 @@ If you use GitHub Actions, you can run `viteshot -p` to automatically push new c
 ## Configuration
 
 You can configure the following options in `viteshot.config.js`:
+
 ```js
 const playwrightShooter = require("viteshot/shooters/playwright");
 const playwright = require("playwright");
@@ -112,7 +116,7 @@ module.exports = {
 
   /**
    * Choose a shooter.
-   * 
+   *
    * See https://github.com/zenclabs/viteshot/tree/main/shooters for other choices.
    */
   shooter: playwrightShooter(playwright.chromium, {

@@ -1,0 +1,8 @@
+{
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "include": ["api/", "src/"],
+  "compilerOptions": {
+    "outDir": "dist",
+    "noEmit": false
+  }
+}
