@@ -28,6 +28,11 @@ export async function startRenderer(options: {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
   });
+  if (relativeFilePaths.length === 0) {
+    throw new Error(
+      `No files found matching pattern: ${options.filePathPattern}`
+    );
+  }
   const frameworkConfig = (() => {
     const frameworkType = options.framework.type;
     switch (options.framework.type) {
@@ -45,10 +50,7 @@ export async function startRenderer(options: {
         throw new Error(`Invalid framework type: ${frameworkType}`);
     }
   })();
-  const rendererDirPath = path.join(
-    __dirname,
-    process.env["RENDERER_DIR_PATH"] || "../renderers"
-  );
+  const rendererDirPath = path.join(__dirname, "../renderers");
   // Support both production (.js) and development (.ts).
   const extension = (await fs.pathExists(path.join(rendererDirPath, "main.js")))
     ? ".js"
@@ -145,15 +147,6 @@ export async function startRenderer(options: {
               format: "esm",
               sourcefile: id,
             });
-            // Since React 17, importing React is optional when building with webpack.
-            // We do need the import with Vite, however.
-            const reactImportRegExp = /import (\* as )?React[ ,]/;
-            if (
-              transformed.code.includes("React.") &&
-              !reactImportRegExp.test(transformed.code)
-            ) {
-              transformed.code = `import React from "react";${transformed.code}`;
-            }
             return transformed;
           }
           return null;
