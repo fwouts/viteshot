@@ -21,7 +21,7 @@ export async function shootCommand(options: {
   try {
     screenshotPaths = await config.shooter.shoot(`http://localhost:${port}`);
   } catch (e) {
-    return fail(e.message);
+    return fail(`${e}`);
   } finally {
     await stopRenderer();
   }
