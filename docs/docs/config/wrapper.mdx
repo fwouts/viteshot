@@ -1,0 +1,84 @@
+---
+sidebar_position: 3
+---
+
+# Wrapper component
+
+:::caution Supported frameworks
+
+As of `v0.1.8`, this feature is not supported in **Svelte** and **Vue**.
+
+Contributions are welcome!
+
+:::
+
+You may wish to wrap your components into another component, especially if they rely on context providers.
+
+You can automatically wrap each component by creating a wrapper component, which will receive the screenshot component in the `children` property:
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="react"
+  values={[
+  { label: "React", value: "react" },
+  { label: "Preact", value: "preact" },
+  { label: "Solid", value: "solid" },
+  ]}
+>
+  <TabItem value="react">
+
+```jsx title="/__viteshot__/ScreenshotWrapper.tsx"
+import React from "react";
+import styles from "./Wrapper.module.css";
+
+export const Wrapper: React.FC = (props) => (
+  <div className={styles.Wrapper}>{props.children}</div>
+);
+```
+
+  </TabItem>
+  <TabItem value="preact">
+
+```jsx title="/__viteshot__/ScreenshotWrapper.tsx"
+import * as Preact from "preact";
+import styles from "./Wrapper.module.css";
+
+export const Wrapper: Preact.FunctionalComponent = (props) => (
+  <div className={styles.Wrapper}>{props.children}</div>
+);
+```
+
+  </TabItem>
+  <TabItem value="solid">
+
+```jsx title="/__viteshot__/ScreenshotWrapper.tsx"
+import type { Component } from "solid-js";
+import styles from "./Wrapper.module.css";
+
+export const Wrapper: Component = (props) => (
+  <div className={styles.Wrapper}>{props.children}</div>
+);
+```
+
+  </TabItem>
+</Tabs>
+
+Then, update `viteshot.config.js` to point to the wrapper component:
+
+```js title="/viteshot.config.js"
+module.exports = {
+  // ...
+  wrapper: {
+    path: "__viteshot__/ScreenshotWrapper",
+    componentName: "Wrapper",
+  },
+};
+```
+
+:::tip Do you use React Preview?
+
+You can use the same wrapper component for both Viteshot and [React Preview](https://reactpreview.com) by copy-pasting the `wrapper` config in `reactpreview.config.js`.
+
+:::

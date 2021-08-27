@@ -1,0 +1,127 @@
+---
+sidebar_position: 2
+slug: /getting-started
+---
+
+# Getting Started
+
+## Overview
+
+Viteshot (named after [Vite](https://vitejs.dev), pronounced `/vit/`) is a command-line tool that renders screenshots from components.
+
+You can learn more about the rationale behind Viteshot in the [Why Viteshot](/docs/why) section.
+
+## Installation
+
+With NPM:
+
+```sh
+$ npm install viteshot playwright
+```
+
+With Yarn:
+
+```sh
+$ yarn add viteshot playwright
+```
+
+With PNPM:
+
+```sh
+$ pnpm add viteshot playwright
+```
+
+## First Time Setup
+
+To set up Viteshot in your project, run:
+
+```sh
+$ viteshot init
+```
+
+Viteshow will automatically detect which framework you're using and set up the appropriate defaults for you.
+
+## Create your first screenshot
+
+Select your framework below for an example.
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="react"
+  values={[
+    { label: "React", value: "react" },
+    { label: "Preact", value: "preact" },
+    { label: "Solid", value: "solid" },
+    { label: "Svelte", value: "svelte" },
+    { label: "Vue", value: "vue" },
+  ]}
+>
+  <TabItem value="react">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import React from "react";
+
+export const MyScreenshot = () => <div>Hello, World!</div>;
+```
+
+  </TabItem>
+  <TabItem value="preact">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import { h } from "preact";
+
+export const MyScreenshot = () => <div>Hello, World!</div>;
+```
+
+  </TabItem>
+  <TabItem value="solid">
+
+```jsx title="/src/components/example.screenshot.jsx"
+export const MyScreenshot = () => <div>Hello, World!</div>;
+```
+
+  </TabItem>
+  <TabItem value="svelte">
+
+```svelte title="/src/components/example.screenshot.svelte"
+<div>Hello, World!</div>
+```
+
+  </TabItem>
+  <TabItem value="vue">
+
+```vue title="/src/components/example.screenshot.vue"
+<template>
+  <div>Hello, World!</div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "MyScreenshot",
+});
+</script>
+```
+
+  </TabItem>
+</Tabs>
+
+## Generate screenshots
+
+To generate screenshots, run:
+
+```sh
+$ viteshot
+```
+
+You should see an output similar to:
+
+```txt
+Capturing: src/components/__screenshots__/darwin/example-MyScreenshot.png
+All done.
+```
+
+That's it!
