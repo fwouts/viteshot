@@ -16,19 +16,23 @@ You can learn more about the rationale behind Viteshot in the [Why Viteshot](/do
 With NPM:
 
 ```sh
-$ npm install viteshot
+$ npm install viteshot playwright
 ```
 
 With Yarn:
 
 ```sh
-$ yarn add viteshot
+$ yarn add viteshot playwright
 ```
 
 With PNPM:
 
 ```sh
-$ pnpm add viteshot
+$ pnpm add viteshot playwright
 ```
 
 ## First Time Setup
+
+```sh
+viteshot init
+```
