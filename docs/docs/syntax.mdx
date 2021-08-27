@@ -1,48 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
 
-# Getting Started
-
-## Overview
-
-Viteshot (named after [Vite](https://vitejs.dev), pronounced `/vit/`) is a command-line tool that renders screenshots from components.
-
-You can learn more about the rationale behind Viteshot in the [Why Viteshot](/docs/why) section.
-
-## Installation
-
-With NPM:
-
-```sh
-$ npm install viteshot playwright
-```
-
-With Yarn:
-
-```sh
-$ yarn add viteshot playwright
-```
-
-With PNPM:
-
-```sh
-$ pnpm add viteshot playwright
-```
-
-## First Time Setup
-
-To set up Viteshot in your project, run:
-
-```sh
-$ viteshot init
-```
-
-Viteshow will automatically detect which framework you're using and set up the appropriate defaults for you.
-
-## Create your first screenshot
-
-Select your framework below for an example.
+# Syntax
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -107,20 +67,3 @@ export default defineComponent({
 
   </TabItem>
 </Tabs>
-
-## Generate screenshots
-
-To generate screenshots, run:
-
-```sh
-$ viteshot
-```
-
-You should see an output similar to:
-
-```txt
-Capturing: src/components/__screenshots__/darwin/example-MyScreenshot.png
-All done.
-```
-
-That's it!

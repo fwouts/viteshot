@@ -13,3 +13,5 @@ Read on to learn about:
 - configuring module aliases
 - SVGR support (React only)
 - specifying screenshot viewports
+- using multiple browsers
+- customising generated screenshot file paths
