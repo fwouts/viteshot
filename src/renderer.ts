@@ -147,15 +147,6 @@ export async function startRenderer(options: {
               format: "esm",
               sourcefile: id,
             });
-            // Since React 17, importing React is optional when building with webpack.
-            // We do need the import with Vite, however.
-            const reactImportRegExp = /import (\* as )?React[ ,]/;
-            if (
-              transformed.code.includes("React.") &&
-              !reactImportRegExp.test(transformed.code)
-            ) {
-              transformed.code = `import React from "react";${transformed.code}`;
-            }
             return transformed;
           }
           return null;
