@@ -28,6 +28,11 @@ export async function startRenderer(options: {
     ignore: "**/node_modules/**",
     cwd: options.projectPath,
   });
+  if (relativeFilePaths.length === 0) {
+    throw new Error(
+      `No files found matching pattern: ${options.filePathPattern}`
+    );
+  }
   const frameworkConfig = (() => {
     const frameworkType = options.framework.type;
     switch (options.framework.type) {

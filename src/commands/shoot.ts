@@ -13,12 +13,13 @@ export async function shootCommand(options: {
 }) {
   const config = await readConfig(options.config);
   const port = await getPort();
-  const stopRenderer = await startRenderer({
-    ...config,
-    port,
-  });
+  let stopRenderer = async () => {};
   let screenshotPaths: string[];
   try {
+    stopRenderer = await startRenderer({
+      ...config,
+      port,
+    });
     screenshotPaths = await config.shooter.shoot(`http://localhost:${port}`);
   } catch (e) {
     return fail(`${e}`);
