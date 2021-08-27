@@ -5,10 +5,10 @@
   "license": "MIT",
   "types": "src/index.d.ts",
   "bin": {
-    "viteshot": "lib/src/cli.js"
+    "viteshot": "lib/cli.js"
   },
   "scripts": {
-    "build": "rimraf dist && rollup -c && chmod +x dist/lib/src/cli.js && cp package.json dist/ && cp README.md dist/",
+    "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/ && cp README.md dist/",
     "dev": "ts-node src/cli.ts",
     "dev:watch": "ts-node-dev --respawn src/cli.ts",
     "release": "yarn build && cd dist && yarn publish --non-interactive"
@@ -30,7 +30,6 @@
   "devDependencies": {
     "@percy/cli": "^1.0.0-beta.58",
     "@percy/puppeteer": "^2.0.0",
-    "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-replace": "^3.0.0",
     "@types/connect": "^3.4.34",
     "@types/fs-extra": "^9.0.11",
