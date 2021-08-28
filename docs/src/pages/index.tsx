@@ -3,7 +3,6 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import clsx from "clsx";
 import React from "react";
-import Logo from "../../static/img/logo-min.svg";
 import styles from "./index.module.css";
 
 function HomepageHeader() {
@@ -12,7 +11,7 @@ function HomepageHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
-        <Logo className={styles.heroLogo} />
+        <img src="/img/logo-min.svg" className={styles.heroLogo} />
         <p className="hero__subtitle">{siteConfig.tagline}</p>
       </div>
     </header>
@@ -53,7 +52,7 @@ export default function Home() {
                 <h3>Fast</h3>
               </div>
               <div className="card__image">
-                <img src="/static/img/undraw_Outer_space_drqu.svg" />
+                <img src="/img/undraw_Outer_space_drqu.svg" />
               </div>
               <div className="card__body">
                 <p>
@@ -76,7 +75,7 @@ export default function Home() {
                 <h3>Easy</h3>
               </div>
               <div className="card__image">
-                <img src="/static/img/undraw_happy_feeling_slmw.svg" />
+                <img src="/img/undraw_happy_feeling_slmw.svg" />
               </div>
               <div className="card__body">
                 <p>
@@ -96,7 +95,7 @@ export default function Home() {
                 <h3>Flexible</h3>
               </div>
               <div className="card__image">
-                <img src="/static/img/undraw_elements_cipa-3.svg" />
+                <img src="/img/undraw_elements_cipa-3.svg" />
               </div>
               <div className="card__body">
                 <p>
