@@ -1,0 +1,147 @@
+---
+sidebar_position: 4
+---
+
+# Async Screenshots
+
+Viteshot lets you specify a `beforeScreenshot` hook, allowing you to wait for a specific state or interact with the component before taking the screenshot.
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="react"
+  values={[
+    { label: "React", value: "react" },
+    { label: "Preact", value: "preact" },
+    { label: "Solid", value: "solid" },
+    { label: "Svelte", value: "svelte" },
+    { label: "Vue 3", value: "vue" },
+  ]}
+>
+  <TabItem value="react">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import React from "react";
+
+export const Clicked = () => {
+  const [clicked, setClicked] = useState(false);
+
+  return (
+    <div>
+      <button id="button" onClick={() => setClicked(true)}>
+        {clicked ? "clicked" : "not clicked"}
+      </button>
+    </div>
+  );
+};
+Clicked.beforeScreenshot = async (element: HTMLElement) => {
+  element.querySelector<HTMLButtonElement>("#button")!.click();
+};
+
+```
+
+  </TabItem>
+  <TabItem value="preact">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import { h } from "preact";
+import { useState } from "preact/hooks";
+
+export const Clicked = () => {
+  const [clicked, setClicked] = useState(false);
+
+  return (
+    <div>
+      <button id="button" onClick={() => setClicked(true)}>
+        {clicked ? "clicked" : "not clicked"}
+      </button>
+    </div>
+  );
+};
+Clicked.beforeScreenshot = async (element: HTMLElement) => {
+  element.querySelector<HTMLButtonElement>("#button")!.click();
+};
+
+```
+
+  </TabItem>
+  <TabItem value="solid">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import { createSignal } from "solid-js";
+
+export const Clicked = () => {
+  const [clicked, setClicked] = createSignal(false);
+
+  return (
+    <div>
+      <button id="button" onClick={() => setClicked(true)}>
+        {clicked() ? "clicked" : "not clicked"}
+      </button>
+    </div>
+  );
+};
+Clicked.beforeScreenshot = async (element: HTMLElement) => {
+  element.querySelector<HTMLButtonElement>("#button")!.click();
+};
+```
+
+  </TabItem>
+  <TabItem value="svelte">
+
+```svelte title="/src/components/example.screenshot.svelte"
+<script lang="ts">
+  let clicked = false;
+  const onClick = () => {
+    clicked = true;
+  };
+
+  export function beforeScreenshot(element: HTMLElement) {
+    element.querySelector("button")!.click();
+  }
+</script>
+
+<div>
+  <button id="button" on:click={onClick}>
+    {clicked ? "clicked" : "not clicked"}
+  </button>
+</div>
+```
+
+  </TabItem>
+  <TabItem value="vue">
+
+```vue title="/src/components/example.screenshot.vue"
+<template>
+  <div>
+    <button id="button" @click="onClick">
+      {{ clicked ? "clicked" : "not clicked" }}
+    </button>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "Clicked",
+  data() {
+    return {
+      clicked: false,
+    };
+  },
+  methods: {
+    click() {
+      this.clicked = true;
+    },
+  },
+  beforeScreenshot(element: HTMLElement) {
+    element.querySelector("button")!.click();
+  },
+});
+</script>
+```
+
+  </TabItem>
+</Tabs>

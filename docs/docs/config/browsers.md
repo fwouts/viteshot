@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Browsers and Viewports
@@ -73,4 +73,35 @@ $ viteshot -c viteshot.chromium.js
 
 :::
 
-## Percy shooter
+## Alternative: Percy shooter
+
+While Playwright generates screenshots on the machine that runs `viteshot`, an alternative is to use a service such as [Percy](https://percy.io), which uploads HTML/CSS snapshots to the cloud before taking screenshots with a suite of browsers.
+
+This means that you won't have to manage screenshots yourself, but it comes at a cost (literally).
+
+To use Percy, first install `@percy/puppeteer` and `puppeteer`.
+
+Then, update `viteshot.config.js`:
+
+```js title="/viteshot.config.js"
+const percyShooter = require("viteshot/shooters/percy");
+
+module.exports = {
+  // ....
+  shooter: percyShooter(),
+};
+```
+
+You can then upload screenshots to Percy by running:
+
+```sh
+$ percy exec -- viteshot
+```
+
+:::note Do you work at Percy / BrowserStack?
+
+Percy shooter is currently not automatically tested because Percy no longer grants free licenses to open-source projects.
+
+If you work at Percy and would like to help improve the Percy shooter or better yet sponsor Viteshot, please get in touch!
+
+:::
