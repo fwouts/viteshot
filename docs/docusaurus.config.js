@@ -4,7 +4,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Viteshot",
-  tagline: "Generate screenshots of React components within seconds",
+  tagline: "Generate screenshots of UI components within seconds",
   url: "https://viteshot.com",
   baseUrl: "/",
   onBrokenLinks: "throw",

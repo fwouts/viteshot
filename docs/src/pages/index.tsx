@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <Layout
       title={siteConfig.title}
-      description="Viteshot is an open-source tool to generate screenshots of React components within seconds."
+      description="Viteshot is an open-source tool to generate screenshots of UI components within seconds."
     >
       <HomepageHeader />
       <main>
