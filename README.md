@@ -35,8 +35,6 @@ viteshot init
 
 Please refer to the [documentation](https://viteshot.com) for the full documentation.
 
-<a href="https://viteshot.com" style="display: block; margin: auto; text-align: center; background: hsl(213, 60%, 60%); color: hsl(213, 80%, 10%); font-size: 2rem; border-radius: 0.5rem; padding: 0.5rem;">Open documentation</a>
-
 ## Examples
 
 All you need is to export UI components from files with the `.screenshot.jsx/tsx/vue/svelte` extension.
