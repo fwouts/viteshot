@@ -31,9 +31,9 @@ pnpm add -D viteshot # PNPM
 viteshot init
 ```
 
-## Documentation
+## Getting Started
 
-Please refer to the [documentation](https://viteshot.com) for the full documentation.
+Please refer to the [documentation](https://viteshot.com/docs/getting-started) for more information.
 
 ## Examples
 
