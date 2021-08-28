@@ -24,7 +24,6 @@ export default function Home() {
       description="Viteshot is an open-source tool to generate screenshots of your React components within seconds."
     >
       <HomepageHeader />
-      <main>TODO :)</main>
     </Layout>
   );
 }
