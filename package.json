@@ -53,5 +53,29 @@
     "vue": "^3",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
+  },
+  "peerDependencies": {
+    "@percy/puppeteer": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0",
+    "@vitejs/plugin-vue": "^1.2.3",
+    "puppeteer": "^10.2.0",
+    "vite-plugin-solid": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@percy/puppeteer": {
+      "optional": true
+    },
+    "@sveltejs/vite-plugin-svelte": {
+      "optional": true
+    },
+    "@vitejs/plugin-vue": {
+      "optional": true
+    },
+    "puppeteer": {
+      "optional": true
+    },
+    "vite-plugin-solid": {
+      "optional": true
+    }
   }
 }

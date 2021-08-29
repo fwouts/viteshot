@@ -9,11 +9,6 @@ import { promisify } from "util";
 import * as vite from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { FrameworkOptions, WrapperConfig } from "./config";
-import { preactConfiguration } from "./frameworks/preact";
-import { reactConfiguration } from "./frameworks/react";
-import { solidConfiguration } from "./frameworks/solid";
-import { svelteConfiguration } from "./frameworks/svelte";
-import { vueConfiguration } from "./frameworks/vue";
 
 export async function startRenderer(options: {
   framework: FrameworkOptions;
@@ -33,19 +28,24 @@ export async function startRenderer(options: {
       `No files found matching pattern: ${options.filePathPattern}`
     );
   }
-  const frameworkConfig = (() => {
+  const frameworkConfig = await (async () => {
     const frameworkType = options.framework.type;
     switch (options.framework.type) {
       case "preact":
+        const { preactConfiguration } = await import("./frameworks/preact");
         return preactConfiguration();
       case "react":
+        const { reactConfiguration } = await import("./frameworks/react");
         return reactConfiguration(options.framework);
       case "solid":
-        return solidConfiguration();
+        const { solidConfiguration } = await import("./frameworks/solid");
+        return solidConfiguration(options.projectPath);
       case "svelte":
-        return svelteConfiguration();
+        const { svelteConfiguration } = await import("./frameworks/svelte");
+        return svelteConfiguration(options.projectPath);
       case "vue":
-        return vueConfiguration();
+        const { vueConfiguration } = await import("./frameworks/vue");
+        return vueConfiguration(options.projectPath);
       default:
         throw new Error(`Invalid framework type: ${frameworkType}`);
     }
@@ -98,6 +98,7 @@ export async function startRenderer(options: {
   `;
   const viteServer = await vite.createServer({
     root: options.projectPath,
+    configFile: false,
     server: {
       middlewareMode: true,
       hmr: {
