@@ -42,10 +42,10 @@ export async function startRenderer(options: {
         return solidConfiguration(options.projectPath);
       case "svelte":
         const { svelteConfiguration } = await import("./frameworks/svelte");
-        return svelteConfiguration();
+        return svelteConfiguration(options.projectPath);
       case "vue":
         const { vueConfiguration } = await import("./frameworks/vue");
-        return vueConfiguration();
+        return vueConfiguration(options.projectPath);
       default:
         throw new Error(`Invalid framework type: ${frameworkType}`);
     }
