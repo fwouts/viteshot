@@ -98,6 +98,7 @@ export async function startRenderer(options: {
   `;
   const viteServer = await vite.createServer({
     root: options.projectPath,
+    configFile: false,
     server: {
       middlewareMode: true,
       hmr: {
