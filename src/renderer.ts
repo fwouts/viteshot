@@ -39,7 +39,7 @@ export async function startRenderer(options: {
         return reactConfiguration(options.framework);
       case "solid":
         const { solidConfiguration } = await import("./frameworks/solid");
-        return solidConfiguration();
+        return solidConfiguration(options.projectPath);
       case "svelte":
         const { svelteConfiguration } = await import("./frameworks/svelte");
         return svelteConfiguration();
