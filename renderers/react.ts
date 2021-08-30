@@ -21,7 +21,10 @@ export async function renderScreenshots(
     }
     root.innerHTML = "";
     try {
-      ReactDOM.render(React.createElement(Wrapper, {}, Component), root);
+      ReactDOM.render(
+        React.createElement(Wrapper, {}, React.createElement(Component)),
+        root
+      );
       const beforeScreenshot = (Component as any).beforeScreenshot;
       if (beforeScreenshot) {
         await beforeScreenshot(root);
