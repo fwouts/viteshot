@@ -45,10 +45,13 @@ export default (
               const selectors = Array.from(document.querySelectorAll("img"));
               await Promise.all(
                 selectors.map((img) => {
-                  if (img.complete) return;
-                  return new Promise((resolve, reject) => {
+                  if (img.complete) {
+                    return;
+                  }
+                  return new Promise((resolve) => {
                     img.addEventListener("load", resolve);
-                    img.addEventListener("error", reject);
+                    // If an image fails to load, ignore it.
+                    img.addEventListener("error", resolve);
                   });
                 })
               );
