@@ -39,6 +39,20 @@ export default (
         await page.exposeFunction(
           "__takeScreenshot__",
           async (name: string) => {
+            // Ensure all images are loaded.
+            // Source: https://stackoverflow.com/a/49233383
+            await page.evaluate(async () => {
+              const selectors = Array.from(document.querySelectorAll("img"));
+              await Promise.all(
+                selectors.map((img) => {
+                  if (img.complete) return;
+                  return new Promise((resolve, reject) => {
+                    img.addEventListener("load", resolve);
+                    img.addEventListener("error", reject);
+                  });
+                })
+              );
+            });
             const dirPath = path.dirname(name);
             const baseName = path.basename(name);
             const screenshotPath = path.resolve(
