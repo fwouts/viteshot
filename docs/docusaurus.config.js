@@ -3,7 +3,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: "Viteshot",
+  title: "ViteShot",
   tagline: "Generate screenshots of UI components within seconds",
   url: "https://viteshot.com",
   baseUrl: "/",
@@ -23,9 +23,9 @@ module.exports = {
   themeConfig: {
     image: "img/og-image.png",
     navbar: {
-      title: "Viteshot",
+      title: "ViteShot",
       logo: {
-        alt: "Viteshot Logo",
+        alt: "ViteShot Logo",
         src: "img/logo.svg",
       },
       items: [

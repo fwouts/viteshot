@@ -8,7 +8,7 @@ Thanks to a strong foundation provided by [Vite](https://vitejs.dev), most CSS-i
 
 ## Global CSS
 
-Since Viteshot renders components in isolation, it doesn't run any top-level entry points that you may have set up in your app. This means that you will need to explicitly import any global CSS from your screenshots.
+Since ViteShot renders components in isolation, it doesn't run any top-level entry points that you may have set up in your app. This means that you will need to explicitly import any global CSS from your screenshots.
 
 For example in React:
 

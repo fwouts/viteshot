@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <Layout
       title={siteConfig.title}
-      description="Viteshot is an open-source tool to generate screenshots of UI components within seconds."
+      description="ViteShot is an open-source tool to generate screenshots of UI components within seconds."
     >
       <HomepageHeader />
       <main>
@@ -65,7 +65,7 @@ export default function Home() {
               </div>
               <div className="card__body">
                 <p>
-                  Viteshot is built on top of{" "}
+                  ViteShot is built on top of{" "}
                   <a href="https://vitejs.dev" target="_blank">
                     Vite
                   </a>
@@ -88,11 +88,11 @@ export default function Home() {
               </div>
               <div className="card__body">
                 <p>
-                  Viteshot works out of the box for React, Preact, Solid, Svelte
+                  ViteShot works out of the box for React, Preact, Solid, Svelte
                   and Vue 3 projects.
                 </p>
                 <p>
-                  All you need is a simple config file, which Viteshot can
+                  All you need is a simple config file, which ViteShot can
                   generate for you.
                 </p>
               </div>
@@ -108,7 +108,7 @@ export default function Home() {
               </div>
               <div className="card__body">
                 <p>
-                  Viteshot can handle complex scenarios easily thanks to
+                  ViteShot can handle complex scenarios easily thanks to
                   pre-screenshot hooks.
                 </p>
                 <p>

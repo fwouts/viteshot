@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Custom Aliases
 
-If you use custom aliases, you may need to help Viteshot resolve imports.
+If you use custom aliases, you may need to help ViteShot resolve imports.
 
 For example if you use Webpack, you would need the following configuration:
 
@@ -28,4 +28,4 @@ For more information, see [Vite's documentation](https://vitejs.dev/config/#reso
 
 If you use TypeScript, you're in luck.
 
-Viteshot uses [vite-tsconfig-paths](https://github.com/aleclarson/vite-tsconfig-paths), which automatically detects aliases from `tsconfig.json`. As a result, you may not need to explicitly provide aliases.
+ViteShot uses [vite-tsconfig-paths](https://github.com/aleclarson/vite-tsconfig-paths), which automatically detects aliases from `tsconfig.json`. As a result, you may not need to explicitly provide aliases.

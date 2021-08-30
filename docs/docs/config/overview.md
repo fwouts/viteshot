@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Config Overview
 
-Viteshot may not work out of the box for complex use cases, but fear not! You may only be one line of config away from your goal.
+ViteShot may not work out of the box for complex use cases, but fear not! You may only be one line of config away from your goal.
 
 Here is an overview of supported options:
 

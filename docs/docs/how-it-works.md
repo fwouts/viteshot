@@ -2,9 +2,9 @@
 sidebar_position: 6
 ---
 
-# How Viteshot Works
+# How ViteShot Works
 
-In order to take screenshots as fast as possible, Viteshot generates a virtual app that imports every screenshot file in your codebase and spins it up with [Vite](https://vitejs.dev).
+In order to take screenshots as fast as possible, ViteShot generates a virtual app that imports every screenshot file in your codebase and spins it up with [Vite](https://vitejs.dev).
 
 It then loads the page and iterates through all screenshot scenarios in a loop, taking a screenshot for each.
 

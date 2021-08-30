@@ -102,6 +102,6 @@ $ percy exec -- viteshot
 
 Percy shooter is currently not automatically tested because Percy no longer grants free licenses to open-source projects.
 
-If you work at Percy and would like to help improve the Percy shooter or better yet sponsor Viteshot, please get in touch!
+If you work at Percy and would like to help improve the Percy shooter or better yet sponsor ViteShot, please get in touch!
 
 :::

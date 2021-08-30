@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Managing Screenshots
 
-Viteshot helps you generate screenshots, but that's not the entire story. To achieve visual testing, you need a way to store screenshots and easily compare them across commits.
+ViteShot helps you generate screenshots, but that's not the entire story. To achieve visual testing, you need a way to store screenshots and easily compare them across commits.
 
 You can choose between several approaches:
 

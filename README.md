@@ -12,9 +12,9 @@
 </p>
 <br />
 
-# Viteshot 📸
+# ViteShot 📸
 
-Viteshot is a fast and simple component screenshot tool based on [Vite](https://vitejs.dev).
+ViteShot is a fast and simple component screenshot tool based on [Vite](https://vitejs.dev).
 
 It supports Preact, React, Solid, Svelte and Vue 3.
 
@@ -24,12 +24,12 @@ It supports Preact, React, Solid, Svelte and Vue 3.
 
 ```sh
 
-# Install Viteshot.
+# Install ViteShot.
 npm install --save-dev viteshot # NPM
 yarn add -D viteshot # Yarn
 pnpm add -D viteshot # PNPM
 
-# Set up Viteshot configuration in your repository.
+# Set up ViteShot configuration in your repository.
 viteshot init
 ```
 
