@@ -25,3 +25,11 @@
     max-width: 80%;
   }
 }
+
+.video {
+  box-sizing: border-box;
+  width: 95%;
+  box-shadow: 0 4px 8px 0 hsl(213, 50%, 30%);
+  border-radius: 8px;
+  aspect-ratio: 16/10;
+}

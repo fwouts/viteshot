@@ -18,6 +18,8 @@ Viteshot is a fast and simple component screenshot tool based on [Vite](https://
 
 It supports Preact, React, Solid, Svelte and Vue 3.
 
+![Gif preview](viteshot.gif)
+
 ## Installation
 
 ```sh

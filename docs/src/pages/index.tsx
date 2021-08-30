@@ -13,6 +13,15 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <img src="/img/logo-min.svg" className={styles.heroLogo} />
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <video
+          className={styles.video}
+          src="https://s3.reactpreview.com/viteshot.mp4"
+          autoPlay
+          playsInline
+          loop
+          muted
+          disableRemotePlayback
+        />
       </div>
     </header>
   );
