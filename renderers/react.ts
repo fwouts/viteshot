@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// @ts-ignore
-import { generateFakeProps } from "viteshot/renderers/helpers/fake-props";
 
 export async function renderScreenshots(
   components: Array<
@@ -24,17 +22,7 @@ export async function renderScreenshots(
     root.innerHTML = "";
     try {
       ReactDOM.render(
-        React.createElement(
-          Wrapper,
-          {},
-          {
-            $$typeof: Symbol.for("react.element"),
-            type: Component,
-            key: null,
-            ref: null,
-            props: generateFakeProps(),
-          }
-        ),
+        React.createElement(Wrapper, {}, React.createElement(Component)),
         root
       );
       const beforeScreenshot = (Component as any).beforeScreenshot;
