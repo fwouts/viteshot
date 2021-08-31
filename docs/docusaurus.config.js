@@ -14,7 +14,7 @@ module.exports = {
   projectName: "viteshot",
   scripts: [
     {
-      src: "https://plausible.viteshot.com/js/plausible.js",
+      src: "https://viteshot.com/js/script.js",
       async: true,
       defer: true,
       "data-domain": "viteshot.com",
