@@ -21,6 +21,10 @@ module.exports = {
     },
   ],
   themeConfig: {
+    algolia: {
+      apiKey: "3d87a08a4e159b4a65c997b29782699a",
+      indexName: "viteshot",
+    },
     image: "img/og-image.png",
     navbar: {
       title: "ViteShot",
