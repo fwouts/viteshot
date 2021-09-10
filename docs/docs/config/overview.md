@@ -8,8 +8,6 @@ ViteShot may not work out of the box for complex use cases, but fear not! You ma
 
 Here is an overview of supported options:
 
-##
-
 ```js title="/viteshot.config.js"
 const playwrightShooter = require("viteshot/shooters/playwright");
 const playwright = require("playwright");
