@@ -27,11 +27,13 @@ jobs:
           path: |
             **/node_modules
             ~/.cache/ms-playwright
+            ~/Caches/ms-playwright
           key: ${{ runner.OS }}-v3-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-v3-yarn-
       - run: yarn --frozen-lockfile
       - run: yarn build
+      - run: yarn playwright install
       - run: cd dist && npm link
       - run: |
           cd examples/preact
