@@ -21,7 +21,11 @@ export async function renderScreenshots(
     root.innerHTML = "";
     try {
       Preact.render(
-        Preact.createElement(Wrapper, {}, Preact.createElement(Component, {})),
+        Preact.createElement(
+          Wrapper,
+          {},
+          Preact.createElement(Component, Component.args || {})
+        ),
         root
       );
       const beforeScreenshot = (Component as any).beforeScreenshot;

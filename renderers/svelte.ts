@@ -26,7 +26,7 @@ export async function renderScreenshots(
     try {
       const component = new Component({
         target: root,
-        props: {},
+        props: Component.args || {},
       });
       if (component.beforeScreenshot) {
         await component.beforeScreenshot(root);

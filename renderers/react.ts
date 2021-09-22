@@ -22,7 +22,11 @@ export async function renderScreenshots(
     root.innerHTML = "";
     try {
       ReactDOM.render(
-        React.createElement(Wrapper, {}, React.createElement(Component)),
+        React.createElement(
+          Wrapper,
+          {},
+          React.createElement(Component, Component.args || {})
+        ),
         root
       );
       const beforeScreenshot = (Component as any).beforeScreenshot;

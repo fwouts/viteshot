@@ -1,7 +1,10 @@
 import { createSignal } from "solid-js";
 import AppComponent from "./App";
 
-export const HelloWorld = () => <div>Hi, World!</div>;
+export const HelloWorld = ({ label }: { label: string }) => <div>{label}</div>;
+HelloWorld.args = {
+  label: "Hello, World!",
+};
 
 export const App = () => <AppComponent />;
 
