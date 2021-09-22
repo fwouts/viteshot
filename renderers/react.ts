@@ -25,7 +25,7 @@ export async function renderScreenshots(
         React.createElement(
           Wrapper,
           {},
-          React.createElement(Component, Component.args || {})
+          React.createElement(Component, (Component as any).args || {})
         ),
         root
       );

@@ -24,7 +24,7 @@ export async function renderScreenshots(
         Preact.createElement(
           Wrapper,
           {},
-          Preact.createElement(Component, Component.args || {})
+          Preact.createElement(Component, (Component as any).args || {})
         ),
         root
       );
