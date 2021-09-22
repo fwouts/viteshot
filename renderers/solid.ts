@@ -25,7 +25,7 @@ export async function renderScreenshots(
       detach = render(
         () =>
           createComponent(Wrapper!, {
-            children: createComponent(Component, {}),
+            children: createComponent(Component, (Component as any).args || {}),
           }),
         root
       );

@@ -2,7 +2,10 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import Home from "./routes/home";
 
-export const HelloWorld = () => <div>Hi, World!</div>;
+export const HelloWorld = ({ label }: { label: string }) => <div>{label}</div>;
+HelloWorld.args = {
+  label: "Hello, World!",
+};
 
 export const App = () => <Home />;
 

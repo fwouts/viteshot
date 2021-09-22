@@ -1,7 +1,10 @@
 import { useState } from "react";
 import AppComponent from "./App";
 
-export const HelloWorld = () => <div>Hi, World!</div>;
+export const HelloWorld = ({ label }) => <div>{label}</div>;
+HelloWorld.args = {
+  label: "Hello, World!",
+};
 
 export const App = () => <AppComponent />;
 
