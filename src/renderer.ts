@@ -105,6 +105,9 @@ export async function startRenderer(options: {
         overlay: false,
       },
     },
+    define: {
+      "process.env": {},
+    },
     optimizeDeps: {
       esbuildOptions: {
         plugins: [
