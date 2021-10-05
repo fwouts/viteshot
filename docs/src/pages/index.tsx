@@ -15,7 +15,7 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <video
           className={styles.video}
-          src="https://s3.reactpreview.com/viteshot.mp4"
+          src="/videos/viteshot.mp4"
           autoPlay
           playsInline
           loop
