@@ -38,27 +38,27 @@ jobs:
       - run: |
           cd examples/preact
           npm link viteshot
-          yarn viteshot -p
+          ./node_modules/.bin/viteshot -p
       - run: |
           cd examples/react-js
           npm link viteshot
-          yarn viteshot -p
+          ./node_modules/.bin/viteshot -p
       - run: |
           cd examples/react-tsx
           npm link viteshot
-          yarn viteshot -p
+          ./node_modules/.bin/viteshot -p
       - run: |
           cd examples/solid
           npm link viteshot
-          yarn viteshot -p
+          ./node_modules/.bin/viteshot -p
       - run: |
           cd examples/svelte
           npm link viteshot
-          yarn viteshot -p
+          ./node_modules/.bin/viteshot -p
       - run: |
           cd examples/vue
           npm link viteshot
-          yarn viteshot -p
+          ./node_modules/.bin/viteshot -p
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
