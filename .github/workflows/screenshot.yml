@@ -37,21 +37,27 @@ jobs:
       - run: cd dist && npm link
       - run: |
           cd examples/preact
+          npm link viteshot
           yarn viteshot -p
       - run: |
           cd examples/react-js
+          npm link viteshot
           yarn viteshot -p
       - run: |
           cd examples/react-tsx
+          npm link viteshot
           yarn viteshot -p
       - run: |
           cd examples/solid
+          npm link viteshot
           yarn viteshot -p
       - run: |
           cd examples/svelte
+          npm link viteshot
           yarn viteshot -p
       - run: |
           cd examples/vue
+          npm link viteshot
           yarn viteshot -p
       - uses: actions/upload-artifact@v2
         if: failure()
