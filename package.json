@@ -4,9 +4,7 @@
   "author": "François Wouts <f@zenc.io>",
   "license": "MIT",
   "types": "src/index.d.ts",
-  "bin": {
-    "viteshot": "lib/cli.js"
-  },
+  "bin": "lib/cli.js",
   "scripts": {
     "build": "rimraf dist && rollup -c && chmod +x dist/lib/cli.js && cp package.json dist/ && cp README.md dist/",
     "dev": "ts-node src/cli.ts",
@@ -77,5 +75,9 @@
     "vite-plugin-solid": {
       "optional": true
     }
-  }
+  },
+  "workspaces": [
+    "docs",
+    "examples/*"
+  ]
 }
