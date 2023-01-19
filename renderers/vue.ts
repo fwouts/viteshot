@@ -4,13 +4,17 @@ export async function renderScreenshots(
   components: Array<
     [
       string,
-      Component & { beforeScreenshot?: (element: HTMLElement) => Promise<void> }
+      Component & { beforeScreenshot?: (element: HTMLElement) => Promise<void>, skipScreenshot?: boolean }
     ]
   >
 ) {
   // TODO: Support Wrapper in Vue.
   const root = document.getElementById("root")!;
   for (const [name, component] of components) {
+    if (component.skipScreenshot) {
+      // skipping this component
+      continue;
+    }
     root.innerHTML = "";
     let app: App | null = null;
     try {

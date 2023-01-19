@@ -10,6 +10,7 @@ export async function renderScreenshots(
           props: any;
         }): SvelteComponent & {
           beforeScreenshot?: (element: HTMLElement) => Promise<void>;
+          skipScreenshot?: boolean;
         };
       }
     ]
@@ -20,6 +21,10 @@ export async function renderScreenshots(
   for (const [name, Component] of components) {
     if (typeof Component !== "function") {
       // This is not a component.
+      continue;
+    }
+    if ((Component as any).skipScreenshot) {
+      // skipping this component
       continue;
     }
     root.innerHTML = "";

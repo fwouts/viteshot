@@ -1,0 +1,94 @@
+---
+sidebar_position: 5
+---
+
+# Skipping Screenshots
+
+ViteShot lets you specify a `skipScreenshot` boolean, allowing you skip taking a screenshot of a specific component.
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="react"
+  values={[
+    { label: "React", value: "react" },
+    { label: "Preact", value: "preact" },
+    { label: "Solid", value: "solid" },
+    { label: "Svelte", value: "svelte" },
+    { label: "Vue 3", value: "vue" },
+  ]}
+>
+  <TabItem value="react">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import React from "react";
+
+export const HelloWorld = () => {
+  return (
+    <div>Hello World</div>
+  );
+};
+HelloWorld.skipScreenshot = true;
+```
+
+  </TabItem>
+  <TabItem value="preact">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import { h } from "preact";
+import { useState } from "preact/hooks";
+
+export const HelloWorld = () => {
+  return (
+    <div>Hello World</div>
+  );
+};
+HelloWorld.skipScreenshot = true;
+```
+
+  </TabItem>
+  <TabItem value="solid">
+
+```jsx title="/src/components/example.screenshot.jsx"
+import { createSignal } from "solid-js";
+
+export const HelloWorld = () => {
+  return (
+    <div>Hello World</div>
+  );
+};
+HelloWorld.skipScreenshot = true;
+```
+
+  </TabItem>
+  <TabItem value="svelte">
+
+```svelte title="/src/components/example.screenshot.svelte"
+<script lang="ts">
+  export skipScreenshot = true;
+</script>
+
+<div>Hello World</div>
+```
+
+  </TabItem>
+  <TabItem value="vue">
+
+```vue title="/src/components/example.screenshot.vue"
+<template>
+  <div>Hello World</div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "HelloWorld",
+  skipScreenshot: true,
+});
+</script>
+```
+
+  </TabItem>
+</Tabs>
