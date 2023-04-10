@@ -1,3 +1,9 @@
+> **Warning**
+>
+> This package is no longer actively maintained.
+>
+> Check out [@previewjs/screenshot](https://github.com/fwouts/previewjs/screenshot) for an alternative.
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/zenclabs/viteshot/main/docs/static/img/logo.png" alt="logo" width="200" />
 </p>
